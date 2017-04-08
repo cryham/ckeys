@@ -37,6 +37,8 @@ public:
 
 	//  gui util  -----
 	void SetupGuiClr();
+	void Sep(int y);  // dummy separator
+	void Line(bool dark = false);  //--
 
 
 	//  sfml drawing utils

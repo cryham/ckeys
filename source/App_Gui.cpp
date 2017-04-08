@@ -33,24 +33,29 @@ void App::Gui()
 	PushItemWidth(140);
 	e = InputText("Edit", ed, sizeof(ed));
 	PopItemWidth();
+	Sep(5);
 
 	//  sliders
 	static int i = 0;
-	e = SliderInt("SldInt", &i, 0, 255, "");  SameLine();  Text((""+i2s(i)).c_str());
+	e = SliderInt("SldInt", &i, 0, 255, "");  SameLine();  Text(("i"+i2s(i)).c_str());
 
 	static float f = 0.f;
-	e = SliderFloat("SldFlt", &f, 0.f, 1.f, "");  SameLine();  Text((""+f2s(f,3)).c_str());
+	e = SliderFloat("SldFlt", &f, 0.f, 1.f, "");  SameLine();  Text(("f"+f2s(f,3)).c_str());
 
 	//  check
 	static bool b = false;
+	Sep(5);  Line(true);
 	e = Checkbox("Check", &b);
 
 	//  button
+	Sep(5);
 	e = Button("Save");  //if (e)  Save();
 
 	//  combobox
 	static int c = 0;
+	Sep(5);
 	e = Combo("Cmb", &c, "aaa\0bbb\0\0");
+	//Line();
 
 	End();
 }
