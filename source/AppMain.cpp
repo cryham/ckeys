@@ -13,19 +13,23 @@ AppMain::AppMain()
 
 bool AppMain::Run()
 {
+	//  laod Settings first
+	//------------------
+	App* app = new App();
+	app->set.Load();
+	Settings& set = app->set;
+
 
 	//  Create window
 	//------------------------------------------------
-	//VideoMode vm = VideoMode::getDesktopMode();
-	VideoMode vm = VideoMode(800, 600);
-
 	RenderWindow* window = new RenderWindow(
-		vm, "SFML ImGui demo",  //  title
+		VideoMode(set.xwSize, set.ywSize),
+		"SFML ImGui",  //  title
 		Style::Default,  //Style::None,
 		ContextSettings());
 
 	window->setVerticalSyncEnabled(true);
-	//window->setPosition(Vector2i(0,0));
+	window->setPosition(Vector2i(set.xwPos, set.ywPos));
 
 
 	//  ImGui
@@ -36,14 +40,16 @@ bool AppMain::Run()
 	io.Fonts->ClearFonts();
 	//  font
 	ImFont* fnt = io.Fonts->AddFontFromFileTTF(
-					  "data/DejaVuLGCSans.ttf", 18);
+					  "data/DejaVuLGCSans.ttf", app->set.iFontGui);
 	Texture* fntTex = new Texture;
 	createFontTexture(*fntTex);
 	setFontTexture(*fntTex);
 
 
 	//  Init app
-	App* app = new App();
+	//------------------
+	Vector2u ws = window->getSize();
+	app->Resize(ws.x, ws.y);
 	app->Init();
 
 
@@ -59,12 +65,12 @@ bool AppMain::Run()
 
 	Sprite back(tex);
 
-	//  pass sfml vars
+	//  pass to app
 	app->pWindow = window;
 	app->pBackgr = &back;
 	app->pFont = &font;
 	app->text.setFont(font);
-	app->text.setCharacterSize(app->iFontH);
+	app->text.setCharacterSize(app->set.iFontH);
 
 
 	//  Loop
@@ -81,13 +87,12 @@ bool AppMain::Run()
 
 			switch (e.type)
 			{
-			case Event::KeyPressed:
-				app->KeyDown(e.key);
-				break;
 
-			case Event::Closed:
-				window->close();
-				break;
+			case Event::KeyPressed:		app->KeyDown(e.key);  break;
+			//case Event::KeyReleased:	app->KeyUp(e.key);  break;
+
+			case Event::Resized:	app->Resize(e.size.width, e.size.height);  break;
+			case Event::Closed:		set.GetWndDim(window);  window->close();  break;
 			}
 		}
 		sf::Time time = timer.restart();
@@ -111,6 +116,8 @@ bool AppMain::Run()
 
 	//  dtor
 	//------------------
+	set.Save();
+
 	ImGui::Shutdown();
 	delete window;
 	delete app;

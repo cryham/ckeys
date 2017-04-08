@@ -10,19 +10,17 @@ public:
 	//--------------------------
 	App();
 	bool Init();
+	void Resize(int x, int y);
 
 	bool KeyDown(const sf::Event::KeyEvent& key);
 	void Graph();  // draw graphics
 	void Gui();   // draw Gui
 
 
-	//  vars
-	//--------------------------
-	int iFontH = 18;  // font height
 	//  gui util  -----
 	void SetupGuiClr();
 	void Sep(int y);  // dummy separator
 	void Line(bool dark = false);  //--
 
-
+	Settings set;
 };

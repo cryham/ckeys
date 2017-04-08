@@ -12,5 +12,13 @@ bool App::Init()
 {
 	SetupGuiClr();
 
+
 	return true;
+}
+
+void App::Resize(int x, int y)
+{
+	set.xwSize = x;  set.ywSize = y;
+	if (pWindow)
+		pWindow->setView(sf::View(sf::FloatRect(0.f, 0.f, set.xwSize, set.ywSize)));
 }
