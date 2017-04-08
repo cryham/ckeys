@@ -2,7 +2,7 @@
 #include "../libs/imgui-SFML.h"
 #include "App.h"
 #include "Util.h"
-using namespace std;  using namespace ImGui;  using namespace SFML;
+using namespace ImGui;  using namespace SFML;
 
 
 //  Gui draw and process
@@ -11,8 +11,8 @@ void App::Gui()
 {
 
 	//  window
-	SetNextWindowPos( ImVec2(0, 40),  ImGuiSetCond_Always);
-	SetNextWindowSize(ImVec2(400, 300), ImGuiSetCond_Always);
+	SetNextWindowPos( ImVec2(0, 5),  ImGuiSetCond_Always);
+	SetNextWindowSize(ImVec2(set.xwSize, 60), ImGuiSetCond_Always);
 
 	bool open = true;
 	const int flags = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize;
@@ -20,42 +20,38 @@ void App::Gui()
 	Begin("Window", &open, flags);
 
 
-	//  Pattern  Properties
 	//---------------------------------------------
-	Text("Properties");
-
 	bool e;  // edited, changed
 
-
-	//  editbox
-	static char ed[100]={0};
-
-	PushItemWidth(140);
-	e = InputText("Edit", ed, sizeof(ed));
-	PopItemWidth();
+	//  combobox
 	Sep(5);
+	//Text(("Keys: "+i2s(keys.keys.size())).c_str());
+
+	int x = 0, w;
+	w = 100;  Text("Layout: ");  x += w;  SameLine(x);
+	w = 140;  PushItemWidth(w);
+	e = Combo("Cmb", &set.iCombo, "default\0ck3\0ck4\0\0");  //todo from keys.files
+	if (e)  keys.LoadIndex(set.iCombo);
+	PopItemWidth();  x += w + 40;  SameLine(x);
 
 	//  sliders
-	static int i = 0;
-	e = SliderInt("SldInt", &i, 0, 255, "");  SameLine();  Text(("i"+i2s(i)).c_str());
-
-	static float f = 0.f;
-	e = SliderFloat("SldFlt", &f, 0.f, 1.f, "");  SameLine();  Text(("f"+f2s(f,3)).c_str());
+	static float f = 1.f;
+	w = 160;  PushItemWidth(w);
+	e = SliderFloat("SldFlt", &f, 0.5f, 2.f, "");
+	PopItemWidth();  x += w + 20;  SameLine(x);
+	w = 120;  Text(("Scale "+f2s(f,2)).c_str());  x += w;
 
 	//  check
 	static bool b = false;
-	Sep(5);  Line(true);
-	e = Checkbox("Check", &b);
+	SameLine(x);
+	w = 120;  e = Checkbox("Check", &b);  x += w;
 
 	//  button
-	Sep(5);
+	SameLine(x);
 	e = Button("Save");  //if (e)  Save();
 
-	//  combobox
-	static int c = 0;
-	Sep(5);
-	e = Combo("Cmb", &c, "aaa\0bbb\0\0");
-	//Line();
+	//Sep(5);  Line(true);
 
 	End();
+
 }

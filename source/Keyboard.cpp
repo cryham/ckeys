@@ -106,15 +106,13 @@ void Keys::LoadFromJson(std::string path)
 				//float sf = k2 ? 0.8f :
 				//    k.length() > 1 ? 0.7f : 1.f;
 
-				//  add key
-				Key k;
-				k.x = x0 + x;  k.y = y0 + y;
+				//  add key  --
+				Key k;  k.x = x0 + x;  k.y = y0 + y;
 				k.w = sx * w - se;  k.h = sy * h - se;
-				k.sc = sf * yfnt;
-				k.s = s;
-				x += w * sx;
+				k.sc = sf * yfnt;   k.s = s;
 				keys.push_back(k);
 
+				x += w * sx;
 				w = 1.f;  h = 1.f;  // reset
 
 				//  vk to key
@@ -124,7 +122,7 @@ void Keys::LoadFromJson(std::string path)
 					bool rep = p != std::string::npos;
 					if (rep)
 						s = s.substr(p+1);
-				}/**/
+				}
 				int vk = str2vk[s];
 				if (vk)  // if found
 					vk2key[vk] = keys.size()-1;
@@ -149,5 +147,4 @@ void Keys::LoadFromJson(std::string path)
 			}
 		}
 	}
-
 }

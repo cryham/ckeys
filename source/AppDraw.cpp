@@ -21,7 +21,7 @@ void AppDraw::Rect(int x, int y,  int sx, int sy,
 {
 	pBackgr->setScale(sx-x, sy-y);
 	pBackgr->setPosition(x, y);
-	pBackgr->setColor(sf::Color(b, g, r));
+	pBackgr->setColor(sf::Color(r, g, b));
 	pWindow->draw(*pBackgr);
 }
 

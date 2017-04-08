@@ -21,12 +21,15 @@ bool AppMain::Run()
 
 
 	//  Create window
-	//------------------------------------------------
+	//-----------------------------------------------
+	sf::ContextSettings cs;
+	cs.antialiasingLevel = 8;
+
 	RenderWindow* window = new RenderWindow(
 		VideoMode(set.xwSize, set.ywSize),
-		"SFML ImGui",  //  title
+		"Crystal Keys",  //  title
 		Style::Default,  //Style::None,
-		ContextSettings());
+		cs);
 
 	window->setVerticalSyncEnabled(true);
 	window->setPosition(Vector2i(set.xwPos, set.ywPos));

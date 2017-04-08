@@ -1,4 +1,5 @@
 #include "App.h"
+#include "Keyboard.h"
 
 
 //  ctor
@@ -12,6 +13,9 @@ bool App::Init()
 {
 	SetupGuiClr();
 
+	keys.Init();
+
+	keys.LoadIndex(set.iCombo);
 
 	return true;
 }

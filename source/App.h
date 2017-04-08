@@ -1,6 +1,7 @@
 #pragma once
 #include "AppDraw.h"
 #include "Settings.h"
+#include "Keyboard.h"
 
 
 class App : public AppDraw
@@ -23,4 +24,6 @@ public:
 	void Line(bool dark = false);  //--
 
 	Settings set;
+
+	Keys keys;
 };
