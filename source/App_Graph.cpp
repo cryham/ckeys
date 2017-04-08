@@ -12,7 +12,7 @@ void App::Graph()
 
 	//  test
 	Clr(155,215,255);
-	s =  "Fps: " + f2s(1/dt,1,3);
+	str =  "Fps: " + f2s(1/dt,1,3);
 	Txt(10, 0);
 
 }
