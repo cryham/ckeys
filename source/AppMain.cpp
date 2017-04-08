@@ -1,7 +1,9 @@
 #include <SFML/Graphics.hpp>
+#include "../libs/imgui.h"
+#include "../libs/imgui-SFML.h"
 #include "AppMain.h"
 #include "App.h"
-using namespace sf;
+using namespace sf;  using namespace ImGui::SFML;
 
 
 
@@ -15,15 +17,29 @@ bool AppMain::Run()
 	//  Create window
 	//------------------------------------------------
 	//VideoMode vm = VideoMode::getDesktopMode();
-	VideoMode vm = VideoMode(600, 400);
+	VideoMode vm = VideoMode(800, 600);
 
 	RenderWindow* window = new RenderWindow(
-		vm, "SFML demo",  //  title
+		vm, "SFML ImGui demo",  //  title
 		Style::Default,  //Style::None,
 		ContextSettings());
 
 	window->setVerticalSyncEnabled(true);
 	//window->setPosition(Vector2i(0,0));
+
+
+	//  ImGui
+	//------------------
+	Init(*window);
+	ImGuiIO& io = ImGui::GetIO();
+	io.IniFilename = 0;  io.LogFilename = 0;  // nope
+	io.Fonts->ClearFonts();
+	//  font
+	ImFont* fnt = io.Fonts->AddFontFromFileTTF(
+					  "data/DejaVuLGCSans.ttf", 18);
+	Texture* fntTex = new Texture;
+	createFontTexture(*fntTex);
+	setFontTexture(*fntTex);
 
 
 	//  Init app
@@ -61,6 +77,8 @@ bool AppMain::Run()
 		Event e;
 		while (window->pollEvent(e))
 		{
+			ProcessEvent(e);
+
 			switch (e.type)
 			{
 			case Event::KeyPressed:
@@ -73,19 +91,27 @@ bool AppMain::Run()
 			}
 		}
 		sf::Time time = timer.restart();
+		Update(*window, time);
 		app->dt = time.asSeconds();
 
 		//  Draw
 		//------------------
-		window->clear();
+		app->Gui();
+
+		window->resetGLStates();
 
 		app->Graph();
+
+		ImGui::Render();
 
 		window->display();
 
 		//Sleep(0.20f);
 	}
 
+	//  dtor
+	//------------------
+	ImGui::Shutdown();
 	delete window;
 	delete app;
 	return true;

@@ -7,6 +7,7 @@
 void App::Graph()
 {
 	//  clear screen
+	pWindow->clear();
 	//Rect(0,0, xWindow,yWindow, 0,0,0);
 
 	//  test
