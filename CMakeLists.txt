@@ -5,6 +5,9 @@ project(${PROJECT})
 
 # all source files
 file(GLOB SOURCES
+	libs/*.h
+	libs/*.c
+	libs/*.cpp
 	source/*.h
 	source/*.cpp)
 
@@ -40,3 +43,4 @@ else()
 endif()
 
 target_link_libraries(${PROJECT} ${SFML_LIBRARIES})
+target_link_libraries(${PROJECT} "-lopengl32 -lglu32 -lgdi32")
