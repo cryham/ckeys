@@ -1,6 +1,8 @@
 #include <SFML/Graphics.hpp>
 #include "AppMain.h"
 #include "App.h"
+using namespace sf;
+
 
 
 AppMain::AppMain()
@@ -12,17 +14,17 @@ bool AppMain::Run()
 
 	//  Create window
 	//------------------------------------------------
-	//sf::VideoMode vm = sf::VideoMode::getDesktopMode();
-	sf::VideoMode vm = sf::VideoMode(600, 400);
+	//VideoMode vm = VideoMode::getDesktopMode();
+	VideoMode vm = VideoMode(600, 400);
 
-	sf::RenderWindow* window;
-	window = new sf::RenderWindow(vm,
+	RenderWindow* window;
+	window = new RenderWindow(vm,
 		"SFML demo",  //  title
-		sf::Style::Default,  //sf::Style::None,
-		sf::ContextSettings());
+		Style::Default,  //Style::None,
+		ContextSettings());
 
 	window->setVerticalSyncEnabled(true);
-	//window->setPosition(sf::Vector2i(0,0));
+	//window->setPosition(Vector2i(0,0));
 
 
 	//  Init app
@@ -32,15 +34,15 @@ bool AppMain::Run()
 
 	//  Load data
 	//------------------------------------------------
-	sf::Font font;
+	Font font;
 	if (!font.loadFromFile("data/DejaVuLGCSans.ttf"))
 		{}  //Warning("Can't load .ttf","App Run");
 
-	sf::Texture tex;
+	Texture tex;
 	if (!tex.loadFromFile("data/white.png"))
 		{}  //Warning("Can't load white.png","App Run");
 
-	sf::Sprite back(tex);
+	Sprite back(tex);
 
 	//  pass sfml vars
 	app->pWindow = window;
@@ -56,16 +58,16 @@ bool AppMain::Run()
 	{
 		//  Process events
 		//------------------
-		sf::Event e;
+		Event e;
 		while (window->pollEvent(e))
 		{
 			switch (e.type)
 			{
-			case sf::Event::KeyPressed:
+			case Event::KeyPressed:
 				app->KeyDown(e.key);
 				break;
 
-			case sf::Event::Closed:
+			case Event::Closed:
 				window->close();
 				break;
 			}
@@ -79,7 +81,7 @@ bool AppMain::Run()
 
 		window->display();
 
-		//sf::Sleep(0.20f);
+		//Sleep(0.20f);
 	}
 
 	delete window;
