@@ -13,6 +13,7 @@ public:
 	bool Init();
 	bool KeyDown(const sf::Event::KeyEvent& key);
 	void Graph();  // draw graphics
+	void Gui();   // draw gui
 
 
 	//  vars
@@ -32,6 +33,10 @@ public:
 
 	sf::String s;
 	sf::Color clr;
+
+
+	//  gui util  -----
+	void SetupGuiClr();
 
 
 	//  sfml drawing utils
