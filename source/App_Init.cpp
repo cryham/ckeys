@@ -20,7 +20,7 @@ bool App::Init()
 //------------------------------------------------------------------
 
 //  write out text
-int App::Text(int x, int y)
+int App::Txt(int x, int y)
 {
 	text.setString(s);
 	text.setColor(clr);

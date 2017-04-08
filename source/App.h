@@ -17,6 +17,8 @@ public:
 
 	//  vars
 	//--------------------------
+	float dt = 1.f;  // frame delta time
+
 	int iFontH = 18;  // font height
 
 
@@ -42,7 +44,7 @@ public:
 	}
 
 	//  write out text, from s
-	int Text(int x, int y);
+	int Txt(int x, int y);
 
 	//  fill rectangle
 	void Rect(int x, int y,

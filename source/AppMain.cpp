@@ -17,9 +17,8 @@ bool AppMain::Run()
 	//VideoMode vm = VideoMode::getDesktopMode();
 	VideoMode vm = VideoMode(600, 400);
 
-	RenderWindow* window;
-	window = new RenderWindow(vm,
-		"SFML demo",  //  title
+	RenderWindow* window = new RenderWindow(
+		vm, "SFML demo",  //  title
 		Style::Default,  //Style::None,
 		ContextSettings());
 
@@ -54,6 +53,7 @@ bool AppMain::Run()
 
 	//  Loop
 	//------------------------------------------------
+	Clock timer;
 	while (window->isOpen())
 	{
 		//  Process events
@@ -72,6 +72,8 @@ bool AppMain::Run()
 				break;
 			}
 		}
+		sf::Time time = timer.restart();
+		app->dt = time.asSeconds();
 
 		//  Draw
 		//------------------
