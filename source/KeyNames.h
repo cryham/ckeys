@@ -55,13 +55,13 @@ const static char csKeyNames[256][18]=
 ///  Modifiers  ----
 "L_Shift","R_Shift","L_Ctrl", "R_Ctrl","L_Alt","R_Alt",		// 0xA0 - 0xA5
 
-///  Media  ----
-"Browser Back","Browser Forward","Browser Refresh","Browser Stop",
-"Browser Search","Browser Favorites","Browser Home",		// 0xA6 - 0xAC
+///  Media  Browser ----
+"B Back","B Forward","B Refresh","B Stop",
+"B Search","B Favorites","B Home",		// 0xA6 - 0xAC
 
-"Volume Mute","Volume Down","Volume Up",
-"Media Next","Media Prev","Media Stop","Media Play",
-"Launch Mail","Launch Media","Launch App1","Launch App2",	// 0xAD - 0xB7
+"Vol Mute","Vol Down","Vol Up",
+"M Next","M Prev","M Stop","M Play",
+"L Mail","L Media","L App1","L App2",	// 0xAD - 0xB7
 	"0xB8","0xB9",	// 0xB8 - 0xB9 : reserved
 
 //  Special  ----
@@ -88,5 +88,6 @@ const static char csKeyNames[256][18]=
 "0xF6 ATTN","0xF7 CRSEL", "0xF8 EXSEL","0xF9 EREOF",
 "0xFA PLAY","0xFB ZOOM", "0xFC NONAME","0xFD PA1", "0xFE OEM_CLEAR",			// 0xF6 - 0xFE
 
-	"0xFF --"  // 0xFF : reserved
+	"N_Enter"  // own
+	//"0xFF --"  // 0xFF : reserved
 };

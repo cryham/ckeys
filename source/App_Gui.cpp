@@ -46,7 +46,7 @@ void App::Gui()
 
 	//  slider
 	w = w2;  Text(("Scale  "+f2s(set.fScale,2)).c_str());  x += w;  SameLine(x);
-	w = w3;  PushItemWidth(w);  PushAllowKeyboardFocus(false);
+	w = 300;  PushItemWidth(w);  PushAllowKeyboardFocus(false);
 	e = SliderFloat("SldFlt", &set.fScale, 0.2f, 2.f, "");  PopAllowKeyboardFocus();
 	PopItemWidth();  x += w + 20;  SameLine(x);
 

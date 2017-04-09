@@ -56,6 +56,10 @@ void Keys::LoadFromJson(string path)
 
 	//  load
 	ifstream f(path);
+	//#define DBG  // test
+	#ifdef DBG
+	ofstream of(path + ".log");
+	#endif
 	stringstream ss;  ss << f.rdbuf();
 	string str = ss.str();
 	const char* s = str.c_str();
@@ -141,6 +145,9 @@ void Keys::LoadFromJson(string path)
 						ss = ss.substr(0, p);  // first part
 				}
 				int vk = str2vk[ss];
+				#ifdef DBG
+				of << hex << vk << "  " << ss << endl;
+				#endif
 				if (vk)  // if found
 				{
 					int kk = keys.size();  // is +1

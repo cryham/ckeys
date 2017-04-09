@@ -46,6 +46,21 @@ LRESULT CALLBACK KeyHandler(int nCode, WPARAM wp, LPARAM lp)
 		//  layout update
 		if (!kk->keys.empty())
 		{
+			//  map numpad keys  //
+			const static int vkN[VK_DOWN - VK_PRIOR +1] = {
+				VK_NUMPAD9, VK_NUMPAD3, // VK_PRIOR VK_NEXT
+				VK_NUMPAD1, VK_NUMPAD7, // VK_END VK_HOME
+				VK_NUMPAD4, VK_NUMPAD8, // VK_LEFT VK_UP
+				VK_NUMPAD6, VK_NUMPAD2, // VK_RIGHT VK_DOWN
+			};
+			if (!ext)
+			{	if (vk >= VK_PRIOR && vk <= VK_DOWN)
+					vk = vkN[vk - VK_PRIOR];
+				else if (vk == VK_INSERT)  vk = VK_NUMPAD0;
+				else if (vk == VK_DELETE)  vk = VK_DECIMAL;
+			}else    if (vk == VK_RETURN)  vk = 0xFF;  // own
+
+			//  get key id from vk
 			int id = kk->vk2key[vk] - 1;
 			if (id >= 0)
 			{
