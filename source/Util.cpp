@@ -40,3 +40,22 @@ string strlower(const string& s)
 	transform(ss.begin(), ss.end(), ss.begin(), ::tolower);
 	return ss;
 }
+
+
+bool replK(std::string& str, const std::string& what, const std::string& to)
+{
+	size_t p = str.find(what);
+	bool rep = p != std::string::npos;
+	if (rep)
+		str.replace(p, what.length(), to);
+	return rep;
+}
+
+bool replK(std::wstring& str, const std::wstring& what, const std::wstring& to)
+{
+	size_t p = str.find(what);
+	bool rep = p != std::wstring::npos;
+	if (rep)
+		str.replace(p, what.length(), to);
+	return rep;
+}
