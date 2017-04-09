@@ -79,7 +79,7 @@ void Keys::LoadFromJson(string path)
 	//  params
 	const float sc = 1.3f;
 	const int  sx = 40 * sc, sy = sx, se = 5,  // size x,y, empty margin
-			 yfnt = 14 * sc, x0 = 30, y0 = 120;  // font, start pos
+			 yfnt = 14 * sc, x0 = 0, y0 = 0;  // font, start pos
 
 	//  iterate all
 	//-----------------------------------------------------------

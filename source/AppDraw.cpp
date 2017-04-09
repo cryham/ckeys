@@ -8,7 +8,7 @@
 int AppDraw::Txt(int x, int y, bool draw)
 {
 	text.setString(str);
-	//text.setStyle(bold ? sf::Text::Bold : sf::Text::Regular);
+	text.setStyle(bold ? sf::Text::Bold : sf::Text::Regular);
 	text.setColor(clr);
 	text.setPosition(x, y);
 	if (draw)  pWindow->draw(text);
