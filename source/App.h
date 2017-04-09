@@ -10,6 +10,7 @@ public:
 	//  main
 	//--------------------------
 	App();
+	~App();
 	bool Init();
 	void Resize(int x, int y);
 

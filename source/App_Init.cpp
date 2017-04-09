@@ -17,8 +17,17 @@ bool App::Init()
 
 	keys.LoadIndex(set.iCombo);
 
+	keys.Hook();
+
 	return true;
 }
+
+//  dtor
+App::~App()
+{
+	keys.UnHook();
+}
+
 
 void App::Resize(int x, int y)
 {
