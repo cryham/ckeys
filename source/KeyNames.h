@@ -17,7 +17,7 @@ const static char csKeyNames[256][18]=
 "Pause","Caps Lock",		// 0x13 - 0x14
 
 	"KANA","HANGUL","JUNJA","FINAL","HANJA","0x1A",	// 0x15 - 0x1A
-"Escape",		// 0x1B
+"Esc",		// 0x1B
 	"CONVERT","NONCONVERT","ACCEPT","MODECHANGE",	// 0x1C - 0x1F
 "Space",		// 0x20
 
@@ -25,8 +25,8 @@ const static char csKeyNames[256][18]=
 "PgUp","PgDn","End","Home",			// 0x21 - 0x24
 "Left","Up","Right","Down",			// 0x25 - 0x28
 
-"SELECT","PrtSc","EXECUTE","SNAPSHOT",	// 0x29 - 0x2C
-"Insert","Delete","HELP",				// 0x2D - 0x2F
+"SELECT","PRINT","EXECUTE","PrtSc",	// 0x29 - 0x2C
+"Insert","Delete","HELP",			// 0x2D - 0x2F
 
 ///  Digits, Letters  --------
 "0","1","2","3","4","5","6","7","8","9",  // 0x30 - 0x39

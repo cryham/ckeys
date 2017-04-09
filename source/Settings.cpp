@@ -1,7 +1,7 @@
 #include <SFML/Window.hpp>
 #include "Settings.h"
 #include "../libs/tinyxml2.h"
-//#include "Util.h"
+#include "Util.h"
 using namespace std;  using namespace tinyxml2;
 
 
@@ -28,6 +28,13 @@ void Settings::Default()
 	iFontGui = 17;
 
 	iCombo = 0;
+
+	bList = true;
+	bLayout = true;
+	bFps = false;
+
+	fScale = 1.f;
+
 	escQuit = false;
 
 	strcpy(pathSet, "ckeys.xml");
@@ -56,10 +63,16 @@ bool Settings::Load()
 
 	e = root->FirstChildElement("dim");
 	if (e)
-	{	a = e->Attribute("iFontH");  if (a)  iFontH = atoi(a);
+	{	a = e->Attribute("iFontH");    if (a)  iFontH = atoi(a);
 		a = e->Attribute("iFontGui");  if (a)  iFontGui = atoi(a);
-
-		a = e->Attribute("combo");  if (a)  iCombo = atoi(a);
+		a = e->Attribute("scale");   if (a)  fScale = atof(a);
+		a = e->Attribute("combo");   if (a)  iCombo = atoi(a);
+	}
+	e = root->FirstChildElement("show");
+	if (e)
+	{	a = e->Attribute("list");    if (a)  bList = atoi(a) > 0;
+		a = e->Attribute("layout");  if (a)  bLayout = atoi(a) > 0;
+		a = e->Attribute("fps");     if (a)  bFps = atoi(a) > 0;
 	}
 	e = root->FirstChildElement("window");
 	if (e)
@@ -67,7 +80,7 @@ bool Settings::Load()
 		a = e->Attribute("y");  if (a)  ywPos = atoi(a);
 		a = e->Attribute("sx");  if (a)  xwSize = atoi(a);
 		a = e->Attribute("sy");  if (a)  ywSize = atoi(a);
-		a = e->Attribute("escQuit");  if (a)  escQuit = atoi(a) >0? true: false;
+		a = e->Attribute("escQuit");  if (a)  escQuit = atoi(a) > 0;
 	}
 	return true;
 }
@@ -84,8 +97,14 @@ bool Settings::Save()
 	e = xml.NewElement("dim");
 		e->SetAttribute("iFontH", iFontH);
 		e->SetAttribute("iFontGui", iFontGui);
-
+		e->SetAttribute("scale", f2s(fScale,3).c_str());
 		e->SetAttribute("combo", iCombo);
+	root->InsertEndChild(e);
+
+	e = xml.NewElement("show");
+		e->SetAttribute("list", bList ? 1 : 0);
+		e->SetAttribute("layout", bLayout ? 1 : 0);
+		e->SetAttribute("fps", bFps ? 1 : 0);
 	root->InsertEndChild(e);
 
 	e = xml.NewElement("window");

@@ -97,22 +97,19 @@ void Keys::LoadFromJson(string path)
 				prim = s;
 			else
 			{
-				string ss = s;  // copy org nameg for vk map
-
 				//  replace  ----
-				bool has2 = replK(s, "\\n", "\n");  // key has 2 descr: upper, lower
 				bool ext = false;
+				bool has2 = replK(s, "\\n", "\n");  // key has 2 descr: upper, lower
+				replK(s, "\\\\", "\\");
+				string ss = s;  // copy org nameg for vk map
 				replK(s, "Lock", "");  // rem Lock
-				if (replK(s, "\\\\", "\\"))  ss = "\\";
 				replK(s, "\\\"", "\"");
-				//  left, right modifiers
-				replK(s, "L_", "");
-				replK(s, "R_", "");
-				//  numpad
-				if (replK(s, "N_", ""))  ext = true;
-
-				sf::String ws(s);
 				replK(s, "Space", "");
+				replK(s, "L_", "");  // left, right modifiers
+				replK(s, "R_", "");
+				if (replK(s, "N_", ""))  ext = true;  // numpad
+
+				sf::String ws(s);  // arrow symbols
 				if (found(s, "Left"))   ws = L"←";
 				if (found(s, "Right"))  ws = L"→";
 				if (found(s, "Down"))   ws = L"↓";
@@ -134,13 +131,12 @@ void Keys::LoadFromJson(string path)
 				x += w * sx;
 				w = 1.f;  h = 1.f;  // reset
 
-				//  vk to key  ----
-				if (has2)  // use the lower
-				{
-					size_t p = ss.find("\\n");
-					if (p != string::npos)  // 2 parts
+				//  vk to key  ------
+				if (has2)
+				{	size_t p = ss.find("\n");
+
 					if (!found(ss, "N_"))  // digits, symbols
-						ss = ss.substr(p+2);  // second part
+						ss = ss.substr(p+1);  // second part
 					else  // numpad
 						ss = ss.substr(0, p);  // first part
 				}

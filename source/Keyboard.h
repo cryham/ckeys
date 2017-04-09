@@ -2,8 +2,23 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <list>
+#include <set>
 #include <SFML/System/String.hpp>
+#include <SFML/System/Mutex.hpp>
 
+
+//  keys for pressed list
+struct KeyCode
+{
+	int vk=0, sc=0, ext=0;
+
+	bool operator==(const KeyCode& o) const
+	{	return vk == o.vk && sc == o.sc && ext == o.ext;  }
+
+	bool operator<(const KeyCode& o) const
+	{	return vk < o.vk || sc < o.sc || ext < o.ext;  }
+};
 
 //  keys for layout
 struct Key
@@ -46,4 +61,9 @@ public:
 	void Hook();
 	void UnHook();
 	#endif
+
+	//  keys pressed list
+	//std::set<KeyCode> keyCodes;
+	std::list<KeyCode> keyCodes;
+	sf::Mutex mutex;
 };
