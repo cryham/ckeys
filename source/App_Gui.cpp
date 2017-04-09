@@ -11,7 +11,7 @@ void App::Gui()
 {
 
 	//  dimensions
-	const static int h = 80, w1 = 200, w2 = 110, w3 = 150;
+	const static int h = 84, w1 = 200, w2 = 110, w3 = 150;
 
 	//  window
 	SetNextWindowPos( ImVec2(0, set.ywSize - h),  ImGuiSetCond_Always);
@@ -45,7 +45,7 @@ void App::Gui()
 	w = w1;  e = Checkbox("Simple", &set.bListSimple);  x += w;  SameLine(x);
 
 	//  slider
-	w = w2;  Text(("Scale  "+f2s(set.fScale,3)).c_str());  x += w;  SameLine(x);
+	w = w2;  Text(("Scale  "+f2s(set.fScale,2)).c_str());  x += w;  SameLine(x);
 	w = w3;  PushItemWidth(w);  PushAllowKeyboardFocus(false);
 	e = SliderFloat("SldFlt", &set.fScale, 0.2f, 2.f, "");  PopAllowKeyboardFocus();
 	PopItemWidth();  x += w + 20;  SameLine(x);
@@ -54,7 +54,8 @@ void App::Gui()
 	w = 100;  e = Button("Reset");  if (e)  set.fScale = 1.f;  x += w;  SameLine(x);
 
 	//  fps
-	w = 60;  e = Checkbox("Fps", &set.bFps);  x += w;  SameLine(x);
+	w = 90;  SameLine(set.xwSize - w);
+	e = Checkbox("Fps", &set.bFps);  x += w;  SameLine(x);
 
 	//Sep(5);  Line(true);
 

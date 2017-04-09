@@ -20,6 +20,7 @@ public:
 	bool bold = false;
 
 	float dt = 1.f;  // frame delta time
+	float fps = 1.f;  // fps averaged
 
 
 	//  set text color

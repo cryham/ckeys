@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+#include <SFML/System/Sleep.hpp>
 #include "../libs/imgui.h"
 #include "../libs/imgui-SFML.h"
 #include "AppMain.h"
@@ -79,6 +80,9 @@ bool AppMain::Run()
 	//  Loop
 	//------------------------------------------------
 	Clock timer;
+	const float iv = 0.2f;  // interval for fps update
+	float dt_sum = 0.f;  int cnt = 0;
+
 	while (window->isOpen())
 	{
 		//  Process events
@@ -90,7 +94,6 @@ bool AppMain::Run()
 
 			switch (e.type)
 			{
-
 			case Event::KeyPressed:		app->KeyDown(e.key);  break;
 			//case Event::KeyReleased:	app->KeyUp(e.key);  break;
 
@@ -100,7 +103,15 @@ bool AppMain::Run()
 		}
 		sf::Time time = timer.restart();
 		Update(*window, time);
+
+		//  dt, update fps  ----
 		app->dt = time.asSeconds();
+		dt_sum += app->dt;  ++cnt;
+		if (dt_sum > iv)
+		{
+			app->fps = float(cnt) / dt_sum;
+			dt_sum = 0.f;  cnt = 0;
+		}
 
 		//  Draw
 		//------------------
@@ -114,7 +125,7 @@ bool AppMain::Run()
 
 		window->display();
 
-		//Sleep(0.20f);
+		//sleep(sf::seconds(0.05f));  // test 20 fps
 	}
 
 	//  dtor

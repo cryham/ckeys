@@ -15,7 +15,8 @@ void App::Graph()
 	{
 		text.setCharacterSize(set.iFontH);
 		Clr(155,215,255);
-		str =  "Fps: " + f2s(1/dt,1,3);
+		//str =  "Fps: " + f2s(1.f/dt,1,3);
+		str =  "Fps: " + f2s(fps,1,3);
 		Txt(set.xwSize - 120, 2);
 	}
 
