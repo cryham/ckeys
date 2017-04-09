@@ -5,6 +5,7 @@
 #include <SFML/System/String.hpp>
 
 
+//  keys for layout
 struct Key
 {
 	int x,y, w,h;
@@ -29,7 +30,10 @@ public:
 
 	//  keyboard layout
 	std::vector<Key> keys;
-	std::map<int, int> vk2key;  // vk code to keys id
+
+
+	//  vk code to keys id,  has +1,  0 if not found
+	std::map<int, int> vk2key;
 
 	//  filled on init, from csKeyNames
 	std::map<int, std::string> vk2str;
@@ -38,6 +42,7 @@ public:
 
 	//  keyboard hook
 	#ifdef _WIN32
+	#define	vk_EXTRA 1000
 	void Hook();
 	void UnHook();
 	#endif

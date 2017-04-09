@@ -18,27 +18,32 @@ LRESULT CALLBACK KeyHandler(int nCode, WPARAM wp, LPARAM lp)
 	if (nCode == HC_ACTION)
 	{
 		KBDLLHOOKSTRUCT kh = *((KBDLLHOOKSTRUCT*)lp);
-		int vk = kh.vkCode & 0xFF;
-		//sc = kh.scanCode & 0xFF;
-		//ex = kh.flags & LLKHF_EXTENDED ? 1 : 0;
+		int vk = kh.vkCode & 0xFF,
+			//sc = kh.scanCode & 0xFF,
+			ext = kh.flags & LLKHF_EXTENDED > 0 ? 1 : 0;
+		//if (!ext && vk > 0x2F)  vk += vk_EXTRA;
 
+		//if (!(kh.flags & LLMHF_INJECTED))
 		if (kk != nullptr)
 		if (!kk->keys.empty())
 		{
-			int id = kk->vk2key[vk];
-			//if (id > 0)
-			Key& k = kk->keys[id];
+			int id = kk->vk2key[vk] - 1;
+			if (id >= 0)
+			{	if (id >= vk_EXTRA)  id -= vk_EXTRA;
+				Key& k = kk->keys[id];
 
-			if (wp == WM_SYSKEYDOWN || wp == WM_KEYDOWN)
-			{
-				k.on = true;  // press
-			}
-			else
-			if (wp == WM_SYSKEYUP || wp == WM_KEYUP)
-			{
-				k.on = false;  // release
+				if (wp == WM_SYSKEYDOWN || wp == WM_KEYDOWN)
+				{
+					k.on = true;  // press
+				}
+				else
+				if (wp == WM_SYSKEYUP || wp == WM_KEYUP)
+				{
+					k.on = false;  // release
+				}
 			}
 		}
+		//GetKeyNameText();
 	}
 	return CallNextHookEx(hHook, nCode, wp, lp);
 }

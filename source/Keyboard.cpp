@@ -5,6 +5,7 @@
 #include <sstream>
 #include <string.h>
 #include "../libs/jsmn.h"
+#include "Util.h"
 using namespace std;
 
 
@@ -25,6 +26,7 @@ Keys::Keys()
 bool Keys::Init()
 {
 	pathData = "data/";
+	files.clear();
 	files.push_back("default");  //todo read dir
 	files.push_back("ck3");
 	files.push_back("ck4");
@@ -47,7 +49,7 @@ void Keys::LoadIndex(int id)
 
 //  load layout, read json layout from file
 //-----------------------------------------------------------------------------------------------------------
-void Keys::LoadFromJson(std::string path)
+void Keys::LoadFromJson(string path)
 {
 	//  clear last
 	Destroy();
@@ -95,37 +97,60 @@ void Keys::LoadFromJson(std::string path)
 				prim = s;
 			else
 			{
-				//  replace
+				string ss = s;  // copy org nameg for vk map
+
+				//  replace  ----
 				bool has2 = replK(s, "\\n", "\n");  // key has 2 descr: upper, lower
+				bool ext = false;
 				replK(s, "Lock", "");  // rem Lock
-				replK(s, "\\\\", "\\");
+				if (replK(s, "\\\\", "\\"))  ss = "\\";
 				replK(s, "\\\"", "\"");
+				//  left, right modifiers
+				replK(s, "L_", "");
+				replK(s, "R_", "");
+				//  numpad
+				if (replK(s, "N_", ""))  ext = true;
+
+				sf::String ws(s);
+				replK(s, "Space", "");
+				if (found(s, "Left"))   ws = L"←";
+				if (found(s, "Right"))  ws = L"→";
+				if (found(s, "Down"))   ws = L"↓";
+				if (!found(s, "PgUp"))
+					if (found(s, "Up")) ws = L"↑";
 
 				//  font scale
 				float sf = w < 0.7f ? 0.6f/*ck4 mini*/ : 0.8f;
 				//float sf = k2 ? 0.8f :
 				//    k.length() > 1 ? 0.7f : 1.f;
 
-				//  add key  --
+				//  add key  ----
 				Key k;  k.x = x0 + x;  k.y = y0 + y;
 				k.w = sx * w - se;  k.h = sy * h - se;
-				k.sc = sf * yfnt;   k.s = s;
+				k.sc = sf * yfnt;
+				k.s = ws;
 				keys.push_back(k);
 
 				x += w * sx;
 				w = 1.f;  h = 1.f;  // reset
 
-				//  vk to key
+				//  vk to key  ----
 				if (has2)  // use the lower
 				{
-					size_t p = s.find("\n");
-					bool rep = p != std::string::npos;
-					if (rep)
-						s = s.substr(p+1);
+					size_t p = ss.find("\\n");
+					if (p != string::npos)  // 2 parts
+					if (!found(ss, "N_"))  // digits, symbols
+						ss = ss.substr(p+2);  // second part
+					else  // numpad
+						ss = ss.substr(0, p);  // first part
 				}
-				int vk = str2vk[s];
+				int vk = str2vk[ss];
 				if (vk)  // if found
-					vk2key[vk] = keys.size()-1;
+				{
+					int kk = keys.size();  // is +1
+					if (ext)  kk += vk_EXTRA;  // numpad
+					vk2key[vk] = kk;
+				}
 		}   }
 		else
 		if (t[i].type == JSMN_PRIMITIVE)
