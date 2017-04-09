@@ -33,11 +33,15 @@ public:
 
 
 	//  window  -----
-	int xwPos = 0, ywPos = 0;
-	int xwSize = 1024, ywSize = 768;
+	int   xwPos = 0,     ywPos = 0;
+	int   xwSize = 1024, ywSize = 768;
 
 	bool  bFps = false;    // show Fps
-	bool escQuit = false;
+	bool  escQuit = false;
 
-	char pathSet[260];
+	bool  vsync = true;    // screen advanced
+	int   limitFps = 0;
+	int   iAliasing = 8;
+
+	char  pathSet[260];
 };

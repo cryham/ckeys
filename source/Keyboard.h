@@ -3,7 +3,6 @@
 #include <vector>
 #include <map>
 #include <list>
-#include <set>
 #include <SFML/System/String.hpp>
 #include <SFML/System/Mutex.hpp>
 
@@ -63,7 +62,6 @@ public:
 	#endif
 
 	//  keys pressed list
-	//std::set<KeyCode> keyCodes;
 	std::list<KeyCode> keyCodes;
 	sf::Mutex mutex;
 };

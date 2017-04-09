@@ -7,12 +7,7 @@
 using namespace sf;  using namespace ImGui::SFML;
 
 
-
-AppMain::AppMain()
-{
-}
-
-bool AppMain::Run()
+void AppMain::Run()
 {
 	//  laod Settings first
 	//------------------
@@ -24,7 +19,7 @@ bool AppMain::Run()
 	//  Create window
 	//-----------------------------------------------
 	sf::ContextSettings cs;
-	cs.antialiasingLevel = 8;
+	cs.antialiasingLevel = set.iAliasing;
 
 	RenderWindow* window = new RenderWindow(
 		VideoMode(set.xwSize, set.ywSize),
@@ -32,7 +27,9 @@ bool AppMain::Run()
 		Style::Default,  //Style::None,
 		cs);
 
-	window->setVerticalSyncEnabled(true);
+	window->setVerticalSyncEnabled(set.vsync);
+	if (set.limitFps > 0)
+		window->setFramerateLimit(set.limitFps);
 	window->setPosition(Vector2i(set.xwPos, set.ywPos));
 
 
@@ -135,5 +132,4 @@ bool AppMain::Run()
 	ImGui::Shutdown();
 	delete window;
 	delete app;
-	return true;
 }

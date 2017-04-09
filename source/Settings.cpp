@@ -83,6 +83,10 @@ bool Settings::Load()
 		a = e->Attribute("sx");  if (a)  xwSize = atoi(a);
 		a = e->Attribute("sy");  if (a)  ywSize = atoi(a);
 		a = e->Attribute("escQuit");  if (a)  escQuit = atoi(a) > 0;
+
+		a = e->Attribute("vsync");  if (a)  vsync = atoi(a) > 0;
+		a = e->Attribute("limitFps");  if (a)  limitFps = atoi(a);
+		a = e->Attribute("aliasing");  if (a)  iAliasing = atoi(a);
 	}
 	return true;
 }
@@ -116,6 +120,10 @@ bool Settings::Save()
 		e->SetAttribute("sx", xwSize);
 		e->SetAttribute("sy", ywSize);
 		e->SetAttribute("escQuit", escQuit ? 1 : 0);
+
+		e->SetAttribute("vsync", vsync);
+		e->SetAttribute("limitFps", limitFps);
+		e->SetAttribute("aliasing", iAliasing);
 	root->InsertEndChild(e);
 
 	xml.InsertEndChild(root);

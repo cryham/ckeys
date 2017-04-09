@@ -5,6 +5,5 @@ class AppMain
 {
 public:
 
-	AppMain();
-	bool Run();
+	void Run();
 };
