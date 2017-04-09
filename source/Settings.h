@@ -8,7 +8,7 @@ namespace sf {  class Window;  }
 class Settings
 {
 public:
-	const static int ver = 70;  // version
+	const static int ver = 90;  // version
 
 	//  main  -----
 	Settings();
@@ -34,7 +34,7 @@ public:
 
 	//  window  -----
 	int   xwPos = 0,     ywPos = 0;
-	int   xwSize = 1024, ywSize = 768;
+	int   xwSize = 1310, ywSize = 420;
 
 	bool  bFps = false;    // show Fps
 	bool  escQuit = false;
@@ -42,7 +42,7 @@ public:
 	bool  vsync = true;    // screen advanced
 	int   limitFps = 0;
 	int   iAliasing = 8;
-	int   iSleep = 0;      // in ms
+	int   iSleep = 5;      // in ms
 
 	char  pathSet[260];
 };

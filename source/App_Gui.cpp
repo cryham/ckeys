@@ -44,6 +44,7 @@ void App::Gui()
 	w = 50;  e = Button("Fit");  x += w;  SameLine(x);
 	if (e && set.bLayout && xMax > 0)
 	{
+		//  fit window to layout  ----
 		set.xwSize = min(2560, max(640, xMax + 30));  //par
 		set.ywSize = yMax + h + 4;
 		sf::Vector2u si(set.xwSize, set.ywSize);

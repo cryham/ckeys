@@ -41,7 +41,7 @@ void Settings::Default()
 	vsync = true;
 	limitFps = 0;
 	iAliasing = 8;
-	iSleep = 0;
+	iSleep = 5;
 
 	strcpy(pathSet, "ckeys.xml");
 }
