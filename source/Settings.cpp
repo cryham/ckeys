@@ -38,6 +38,11 @@ void Settings::Default()
 	bFps = false;
 	escQuit = false;
 
+	vsync = true;
+	limitFps = 0;
+	iAliasing = 8;
+	iSleep = 0;
+
 	strcpy(pathSet, "ckeys.xml");
 }
 
@@ -87,6 +92,7 @@ bool Settings::Load()
 		a = e->Attribute("vsync");  if (a)  vsync = atoi(a) > 0;
 		a = e->Attribute("limitFps");  if (a)  limitFps = atoi(a);
 		a = e->Attribute("aliasing");  if (a)  iAliasing = atoi(a);
+		a = e->Attribute("sleep");  if (a)  iSleep = atoi(a);
 	}
 	return true;
 }
@@ -124,6 +130,7 @@ bool Settings::Save()
 		e->SetAttribute("vsync", vsync);
 		e->SetAttribute("limitFps", limitFps);
 		e->SetAttribute("aliasing", iAliasing);
+		e->SetAttribute("sleep", iSleep);
 	root->InsertEndChild(e);
 
 	xml.InsertEndChild(root);

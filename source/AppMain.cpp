@@ -122,7 +122,8 @@ void AppMain::Run()
 
 		window->display();
 
-		//sleep(sf::seconds(0.05f));  // test 20 fps
+		if (set.iSleep > 0)
+			sleep(sf::milliseconds(set.iSleep));
 	}
 
 	//  dtor

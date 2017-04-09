@@ -42,6 +42,7 @@ public:
 	bool  vsync = true;    // screen advanced
 	int   limitFps = 0;
 	int   iAliasing = 8;
+	int   iSleep = 0;      // in ms
 
 	char  pathSet[260];
 };
