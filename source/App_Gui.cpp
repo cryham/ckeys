@@ -10,9 +10,12 @@ using namespace ImGui;  using namespace SFML;
 void App::Gui()
 {
 
+	//  dimensions
+	const static int h = 80, w1 = 200, w2 = 110, w3 = 150;
+
 	//  window
-	SetNextWindowPos( ImVec2(0, set.ywSize-60),  ImGuiSetCond_Always);
-	SetNextWindowSize(ImVec2(set.xwSize, 60), ImGuiSetCond_Always);
+	SetNextWindowPos( ImVec2(0, set.ywSize - h),  ImGuiSetCond_Always);
+	SetNextWindowSize(ImVec2(set.xwSize, h), ImGuiSetCond_Always);
 
 	bool open = true;
 	const int flags = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize;
@@ -28,24 +31,27 @@ void App::Gui()
 	int x = 0, w;
 
 	//  checks
-	w = 180;  e = Checkbox("Pressed List", &set.bList);  x += w;  SameLine(x);
-	w = 100;  e = Checkbox("Layout", &set.bLayout);  x += w;  SameLine(x);
+	w = w1;  e = Checkbox("Pressed List", &set.bList);  x += w;  SameLine(x);
+	w = w2;  e = Checkbox("Layout", &set.bLayout);  x += w;  SameLine(x);
 
 	//  combo
-	w = 140;  PushItemWidth(w);
+	w = w3;  PushItemWidth(w);
 	e = Combo("Cmb", &set.iCombo, "default\0ck3\0ck4\0\0");  //todo from keys.files[]
 	if (e)  keys.LoadIndex(set.iCombo);
-	PopItemWidth();  x += w + 40;  SameLine(x);
+	PopItemWidth();  x += w + 40;  //SameLine(x);
 
+	//  2nd line  ----
+	x = 0;  Sep(2);
+	w = w1;  e = Checkbox("Simple", &set.bListSimple);  x += w;  SameLine(x);
 
 	//  slider
-	w = 90;  Text(("Scale "+f2s(set.fScale,2)).c_str());  x += w;  SameLine(x);
-	w = 150;  PushItemWidth(w);  PushAllowKeyboardFocus(false);
+	w = w2;  Text(("Scale  "+f2s(set.fScale,3)).c_str());  x += w;  SameLine(x);
+	w = w3;  PushItemWidth(w);  PushAllowKeyboardFocus(false);
 	e = SliderFloat("SldFlt", &set.fScale, 0.2f, 2.f, "");  PopAllowKeyboardFocus();
 	PopItemWidth();  x += w + 20;  SameLine(x);
 
 	//  button
-	w = 90;  e = Button("Reset");  if (e)  set.fScale = 1.f;  x += w;  SameLine(x);
+	w = 100;  e = Button("Reset");  if (e)  set.fScale = 1.f;  x += w;  SameLine(x);
 
 	//  fps
 	w = 60;  e = Checkbox("Fps", &set.bFps);  x += w;  SameLine(x);

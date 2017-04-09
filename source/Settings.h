@@ -23,12 +23,12 @@ public:
 	int   iFontH = 18;     // font height in list
 	int   iFontGui = 17;   // font height for Gui
 
-	int   iCombo = 0;      // combo pick id
+	int   iCombo = 0;      // layout combo, picked id
 
 	bool  bList = true;    // show pressed list
-	bool  bLayout = true;  // show keyboard layout
-	bool  bFps = false;    // show Fps
+	bool  bListSimple = true;  // show only names, or full vk,sc,ext info
 
+	bool  bLayout = true;  // show keyboard layout
 	float fScale = 1.f;    // scale layout
 
 
@@ -36,7 +36,7 @@ public:
 	int xwPos = 0, ywPos = 0;
 	int xwSize = 1024, ywSize = 768;
 
-
+	bool  bFps = false;    // show Fps
 	bool escQuit = false;
 
 	char pathSet[260];

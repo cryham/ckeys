@@ -30,11 +30,12 @@ void Settings::Default()
 	iCombo = 0;
 
 	bList = true;
-	bLayout = true;
-	bFps = false;
+	bListSimple = true;
 
+	bLayout = true;
 	fScale = 1.f;
 
+	bFps = false;
 	escQuit = false;
 
 	strcpy(pathSet, "ckeys.xml");
@@ -71,6 +72,7 @@ bool Settings::Load()
 	e = root->FirstChildElement("show");
 	if (e)
 	{	a = e->Attribute("list");    if (a)  bList = atoi(a) > 0;
+		a = e->Attribute("simple");  if (a)  bListSimple = atoi(a) > 0;
 		a = e->Attribute("layout");  if (a)  bLayout = atoi(a) > 0;
 		a = e->Attribute("fps");     if (a)  bFps = atoi(a) > 0;
 	}
@@ -103,6 +105,7 @@ bool Settings::Save()
 
 	e = xml.NewElement("show");
 		e->SetAttribute("list", bList ? 1 : 0);
+		e->SetAttribute("simple", bListSimple ? 1 : 0);
 		e->SetAttribute("layout", bLayout ? 1 : 0);
 		e->SetAttribute("fps", bFps ? 1 : 0);
 	root->InsertEndChild(e);

@@ -22,12 +22,14 @@ void App::Graph()
 
 	//  draw keyboard  --------
 	const float sc = set.fScale;
+	const int xl = !set.bList ? 20 :  // left margin x
+					set.bListSimple ? 110 : 200;
+
 	if (set.bLayout)
 	for (auto& k : keys.keys)
 	{
-		int x = k.x * sc + (set.bList ? 200 : 20), y = k.y * sc + 20,
+		int x = k.x * sc + xl, y = k.y * sc + 20,
 			x2 = x + k.w * sc, y2 = y + k.h * sc;
-		//if (set.bList)  x += 190;
 
 		//  key
 		if (k.on)
@@ -54,12 +56,15 @@ void App::Graph()
 
 	#ifdef _WIN32
 	text.setCharacterSize(set.iFontH - 3);
-	int x = 10, x1 = x + 95, y = 20;
+	int x = 10, x1 = x + 95, y = 25;
 	char s[200];
 
 	//  header
 	Clr(110,140,170);
-	str = "VK  SC  ext  Name";
+	if (set.bListSimple)
+	{	str = "Pressed";  x1 = x;  }
+	else
+		str = "VK  SC  ext  Name";
 	Txt(x,y);
 
 	text.setCharacterSize(set.iFontH);
@@ -70,15 +75,19 @@ void App::Graph()
 	sf::Lock(keys.mutex);
 	for (auto& kc : keys.keyCodes)
 	{
-		sprintf(s, "%02X  %02X", kc.vk, kc.sc);
-		str = s;
-		Clr(140,210,255);  bold = false;
-		Txt(x,y);
+		if (!set.bListSimple)
+		{	//  full info  vk, sc, ext
+			sprintf(s, "%02X  %02X", kc.vk, kc.sc);
+			str = s;
+			Clr(140,210,255);  bold = false;
+			Txt(x,y);
 
-		str = i2s(kc.ext);
-		Clr(110,180,235);
-		Txt(x1 - 25, y);
+			str = i2s(kc.ext);
+			Clr(110,180,235);
+			Txt(x1 - 25, y);
+		}
 
+		//  key name
 		std::string sk = keys.vk2str[kc.vk];
 
 		//  replace N_ with Num
@@ -87,6 +96,8 @@ void App::Graph()
 			sk = "Num " + sk.substr(2);
 		if (sk[1]=='_')  // _ to space, for L_ R_
 			sk[1] = ' ';
+		if (sk == "Backspace")  // too long
+			sk = "Backspc";
 
 		str = sk;
 		Clr(200,230,255);  bold = true;
