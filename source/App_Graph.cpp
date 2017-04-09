@@ -15,9 +15,8 @@ void App::Graph()
 	{
 		text.setCharacterSize(set.iFontH);
 		Clr(155,215,255);
-		//str =  "Fps: " + f2s(1.f/dt,1,3);
-		str =  "Fps: " + f2s(fps,1,3);
-		Txt(set.xwSize - 120, 2);
+		str =  f2s(fps,1,3);  // 1/dt
+		Txt(set.xwSize - 70, 2);
 	}
 
 
@@ -25,6 +24,7 @@ void App::Graph()
 	const float sc = set.fScale;
 	const int xl = !set.bList ? 20 :  // left margin x
 					set.bListSimple ? 110 : 200;
+	xMax = 0;  yMax = 0;
 
 	if (set.bLayout)
 	for (auto& k : keys.keys)
@@ -49,6 +49,10 @@ void App::Graph()
 		str = k.s;
 		text.setCharacterSize(k.sc * sc);
 		Txt(x + 4, y + 4);
+
+		//  get max size
+		if (x2 > xMax)  xMax = x2;
+		if (y2 > yMax)  yMax = y2;
 	}
 
 
@@ -77,7 +81,8 @@ void App::Graph()
 	for (auto& kc : keys.keyCodes)
 	{
 		if (!set.bListSimple)
-		{	//  full info  vk, sc, ext
+		{
+			//  full info  vk, sc, ext
 			sprintf(s, "%02X  %02X", kc.vk, kc.sc);
 			str = s;
 			Clr(140,210,255);  bold = false;

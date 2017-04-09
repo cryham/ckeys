@@ -27,4 +27,7 @@ public:
 	Settings set;
 
 	Keys keys;
+
+	//  auto max size
+	int xMax = 0, yMax = 0;
 };
