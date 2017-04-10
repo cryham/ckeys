@@ -32,6 +32,11 @@ void AppMain::Run()
 		window->setFramerateLimit(set.limitFps);
 	window->setPosition(Vector2i(set.xwPos, set.ywPos));
 
+	//  icon
+	Image icon;
+	if (icon.loadFromFile("data/icon.png"))
+		window->setIcon(32, 32, icon.getPixelsPtr());
+
 
 	//  ImGui
 	//------------------
