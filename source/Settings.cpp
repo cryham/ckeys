@@ -43,6 +43,13 @@ void Settings::Default()
 	iAliasing = 8;
 	iSleep = 5;
 
+	bVK = false;
+	bKLL = false;
+
+	bL1 = true;
+	bL2 = false;
+	bL2 = false;
+
 	strcpy(pathSet, "ckeys.xml");
 }
 
@@ -80,6 +87,11 @@ bool Settings::Load()
 		a = e->Attribute("simple");  if (a)  bListSimple = atoi(a) > 0;
 		a = e->Attribute("layout");  if (a)  bLayout = atoi(a) > 0;
 		a = e->Attribute("fps");     if (a)  bFps = atoi(a) > 0;
+		a = e->Attribute("vk");      if (a)  bVK  = atoi(a) > 0;
+		a = e->Attribute("kll");     if (a)  bKLL = atoi(a) > 0;
+		a = e->Attribute("L1");      if (a)  bL1 = atoi(a) > 0;
+		a = e->Attribute("L2");      if (a)  bL2 = atoi(a) > 0;
+		a = e->Attribute("L3");      if (a)  bL3 = atoi(a) > 0;
 	}
 	e = root->FirstChildElement("window");
 	if (e)
@@ -118,6 +130,11 @@ bool Settings::Save()
 		e->SetAttribute("simple", bListSimple ? 1 : 0);
 		e->SetAttribute("layout", bLayout ? 1 : 0);
 		e->SetAttribute("fps", bFps ? 1 : 0);
+		e->SetAttribute("vk",  bVK  ? 1 : 0);
+		e->SetAttribute("kll", bKLL ? 1 : 0);
+		e->SetAttribute("L1", bL1 ? 1 : 0);
+		e->SetAttribute("L2", bL2 ? 1 : 0);
+		e->SetAttribute("L3", bL3 ? 1 : 0);
 	root->InsertEndChild(e);
 
 	e = xml.NewElement("window");

@@ -44,5 +44,12 @@ public:
 	int   iAliasing = 8;
 	int   iSleep = 5;      // in ms
 
+	bool  bVK = false;     // test vk map
+	bool  bKLL = false;    // test kll map
+
+	bool  bL1 = true;      // layers
+	bool  bL2 = false;
+	bool  bL3 = false;
+
 	char  pathSet[260];
 };
