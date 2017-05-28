@@ -22,10 +22,19 @@ struct KeyCode
 //  keys for layout
 struct Key
 {
-	int x,y, w,h;   // position, dimensions
-	sf::String s;   // caption
-	float sc = 1.f;   // scale
+	//  from json
+	int x,y, w,h;    // position, dimensions
+	float sc = 1.f;  // scale
+
+	sf::String s;    // caption str
+	//  var, from key hook
 	bool on = false;  // pressed
+
+	//  from kll
+	sf::String sk;   // name for kll
+	bool inKll = false;
+	bool hasL2 = false, hasL3 = false;
+	sf::String s2,s3;   // caption on layer 2 and 3
 };
 
 
@@ -36,7 +45,8 @@ public:
 
 	void LoadIndex(int id);
 
-	bool LoadFromJson(std::string path);
+	bool LoadJson(std::string path);
+	bool LoadKll(std::string path, int layer);
 	void Destroy();
 
 
@@ -52,9 +62,16 @@ public:
 	//  keyboard layout
 	std::vector<Key> keys;
 
-	//  vk code to keys id,  has +1,  0 if not found
+	//  vk code to keys id
+	//  maps have +1,  0 if not found
 	std::map<int, int> vk2key;
 
+	//  str caption (1 row) to keys id
+	std::map<std::string, int> str2key;
+
+	//  layers, from kll (optional)
+	std::map<std::string, int> scan2str;
+	std::map<std::string, std::string> lay1str, lay2str;
 
 
 	//  keyboard hook

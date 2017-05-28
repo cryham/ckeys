@@ -11,7 +11,7 @@ using namespace std;
 
 //  load layout, read json layout from file
 //-----------------------------------------------------------------------------------------------------------
-bool Keys::LoadFromJson(string path)
+bool Keys::LoadJson(string path)
 {
 	//  open
 	ifstream f;
@@ -37,7 +37,7 @@ bool Keys::LoadFromJson(string path)
 	string q;  //, re;
 	r = jsmn_parse(&p, s, strlen(s), t, sizeof(t)/sizeof(t[0]));
 	if (r < 0)
-		return true;
+		return false;
 	//	re += "Failed to parse JSON: " + r;
 
 	//  layout
@@ -72,32 +72,32 @@ bool Keys::LoadFromJson(string path)
 				string ss = s;  // copy org nameg for vk map
 				replK(s, "Lock", "");  // rem Lock
 				replK(s, "\\\"", "\"");
-				replK(s, "Space", "");
-				replK(s, "L_", "");  // left, right modifiers
-				replK(s, "R_", "");
+				//replK(s, "Space", " ");
+				replK(s, "Delete", "Del");
+				replK(s, "L_", "");  replK(s, "R_", "");  // left, right modifiers
 				if (replK(s, "N_", ""))  ext = true;  // numpad
 
 				sf::String ws(s);  // arrow symbols
-				if (found(s, "Left"))   ws = L"←";
-				if (found(s, "Right"))  ws = L"→";
+				if (found(s, "Left"))   ws = L"←";  if (found(s, "Right"))  ws = L"→";
 				if (found(s, "Down"))   ws = L"↓";
-				if (!found(s, "PgUp"))
-					if (found(s, "Up")) ws = L"↑";
+				if (!found(s, "PgUp") && found(s, "Up"))  ws = L"↑";
+				if (found(s, "CLEAR"))   ws = "5";
 
 				//  font scale
 				float sf = w < 0.7f ? 0.6f/*ck4 mini*/ : 0.8f;
 				//float sf = k2 ? 0.8f :
 				//    k.length() > 1 ? 0.7f : 1.f;
 
-				//  add key  ----
+
+				//  setup key  ----
 				Key k;  k.x = x0 + x;  k.y = y0 + y;
 				k.w = sx * w - se;  k.h = sy * h - se;
 				k.sc = sf * yfnt;
 				k.s = ws;
-				keys.push_back(k);
 
-				x += w * sx;
+				x += w * sx;  // add x
 				w = 1.f;  h = 1.f;  // reset
+
 
 				//  vk to key  ------
 				if (has2)
@@ -114,10 +114,26 @@ bool Keys::LoadFromJson(string path)
 				#endif
 				if (vk)  // if found
 				{
-					int kk = keys.size();  // is +1
+					int kk = keys.size()+1;
 					if (ext)  kk += vk_EXTRA;  // numpad
 					vk2key[vk] = kk;
 				}
+
+
+				//  str to key  ------
+				string sk = ss;  // todo? cfg file..
+				replK(sk, "L_", "L");  replK(sk, "R_", "R");  // left, right mod
+				replK(sk, "N_", "P");  // numpad
+				replK(sk, "PgUp", "PageUp");  replK(sk, "PgDn", "PageDown");
+				replK(sk, "Win", "Gui");  replK(sk, "Menu", "App");
+				replK(sk, "PrtSc", "PrintScreen");
+				replK(sk, "`", "BackTick");  //replK(sk, " Lock", "Lock");
+
+				str2key[sk] = keys.size()+1;
+				k.sk = sk;  // test
+
+
+				keys.push_back(k);  // add key
 		}   }
 		else
 		if (t[i].type == JSMN_PRIMITIVE)
