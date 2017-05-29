@@ -31,6 +31,7 @@ void Keys::Destroy()
 {
 	keys.clear();
 	vk2key.clear();
+	str2key.clear();
 }
 
 //  read layouts from file

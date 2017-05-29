@@ -65,7 +65,7 @@ bool Keys::LoadJson(string path)
 				prim = s;
 			else
 			{
-				//  replace  ----
+				///****  replace
 				bool ext = false;
 				bool has2 = replK(s, "\\n", "\n");  // key has 2 descr: upper, lower
 				replK(s, "\\\\", "\\");
@@ -82,6 +82,7 @@ bool Keys::LoadJson(string path)
 				if (found(s, "Down"))   ws = L"↓";
 				if (!found(s, "PgUp") && found(s, "Up"))  ws = L"↑";
 				if (found(s, "CLEAR"))   ws = "5";
+				///****
 
 				//  font scale
 				float sf = w < 0.7f ? 0.6f/*ck4 mini*/ : 0.8f;
@@ -120,7 +121,7 @@ bool Keys::LoadJson(string path)
 				}
 
 
-				//  str to key  ------
+				///****  str to key
 				string sk = ss;  // todo? cfg file..
 				replK(sk, "L_", "L");  replK(sk, "R_", "R");  // left, right mod
 				replK(sk, "N_", "P");  // numpad
@@ -128,6 +129,7 @@ bool Keys::LoadJson(string path)
 				replK(sk, "Win", "Gui");  replK(sk, "Menu", "App");
 				replK(sk, "PrtSc", "PrintScreen");
 				replK(sk, "`", "BackTick");  //replK(sk, " Lock", "Lock");
+				///****
 
 				str2key[sk] = keys.size()+1;
 				k.sk = sk;  // test

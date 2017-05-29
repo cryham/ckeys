@@ -53,7 +53,7 @@ bool Keys::LoadKll(string path, int layer)
 	if (!f.is_open())
 		return false;
 
-	#define DBG_OUT  // test
+//	#define DBG_OUT  // test
 	#ifdef DBG_OUT
 	ofstream of;
 	of.open(path+"o", ofstream::out);
@@ -130,21 +130,60 @@ bool Keys::LoadKll(string path, int layer)
 				}
 				else if (ch==';' && !p.skip)  // end of mapping
 				{
+					int id = -1;
 					if (p.scan)
 					{
 						#ifdef DBG_OUT
-						int id = str2key[p.name]-1;
-						if (id >= 0)
-							keys[id].inKll = true;
-
-						of << "sc: " << p.sscan << "  n: " << p.name << "  id: " << id <<"\n";
+						id = str2key[p.name]-1;
+						of << "sc: " << p.sscan << "  n: " << p.name << "  id: " << id << "\n";
 						#endif
 					}else{
 						if (p.name.empty())
 							p.name = s.substr(p.mid0, pos - p.mid0);
 						#ifdef DBG_OUT
-						of << "sn: " << p.sname << "  n: " << p.name << "\n";
+						id = str2key[p.sname]-1;
+						of << "sn: " << p.sname << "  n: " << p.name << "  id: " << id << "\n";
 						#endif
+					}
+					if (id >= 0)
+					{
+						Key& k = keys[id];
+						k.inKll = true;
+
+						///****  shorten kll names
+						string s = p.name;
+						replK(s, "Protocol", "");  replK(s, "Lock", "");  replK(s, "()", "");
+						replK(s, "MUTE", "Mute");  replK(s, "CALCULATOR", "Calc");
+						replK(s, "VOLUMEUP", "V+");  replK(s, "VOLUMEDOWN", "V-");
+						replK(s, "STOP", "[]");  replK(s, "PAUSEPLAY", "||");  replK(s, "PLAY", "|>");
+						replK(s, "SCANPREVIOUSTRACK", "|<");  replK(s, "SCANNEXTTRACK", ">|");
+						//  seq
+						bool b = replK(s, "s(", "s");  if (b)  s = s.substr(0,s.length()-1);
+						if (s.length() == 3 && s[0]=='\'' && s[2]=='\'')
+							s = s[1];
+						//  mouse
+						bool m = replK(s, "mouseOut(", "M");
+						sf::String ws(s);
+						if (m)
+						{
+							char x=0, y=0, b=0;
+							sscanf(s.c_str(), "M%d,%d,%d", &b,&x,&y);
+							if (x < 0)  ws = L"M←";  else  if (x > 0)  ws = L"M→";  else
+							if (y < 0)  ws = L"M↑";  else  if (y > 0)  ws = L"M↓";  else
+							if (b > 0)  ws = "M" + i2s(b);
+						}
+						///****
+
+						if (layer==2)
+						{
+							k.hasL2 = true;
+							k.s2 = ws;
+						}else
+						if (layer==3)
+						{
+							k.hasL3 = true;
+							k.s3 = ws;
+						}
 					}
 					p.Reset();
 				}

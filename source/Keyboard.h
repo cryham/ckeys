@@ -66,12 +66,9 @@ public:
 	//  maps have +1,  0 if not found
 	std::map<int, int> vk2key;
 
-	//  str caption (1 row) to keys id
-	std::map<std::string, int> str2key;
 
-	//  layers, from kll (optional)
-	std::map<std::string, int> scan2str;
-	std::map<std::string, std::string> lay1str, lay2str;
+	//  str caption (1 row) to keys id, for kll layers
+	std::map<std::string, int> str2key;
 
 
 	//  keyboard hook

@@ -36,6 +36,8 @@ void App::Graph()
 	//	{{ 35, 51, 87},{ 82,102,163},{197,217,254}}}};
 		{{105,115,163},{225,235,255},{222,242,255}},  // viol blue
 		{{ 45, 51, 87},{ 92,102,163},{197,217,254}}}};
+	const static rgb  // layer frame
+		kl2 = {60,150,20}, kl3 = {130,130,20};
 	xMax = 0;  yMax = 0;
 
 	if (set.bLayout)
@@ -48,23 +50,41 @@ void App::Graph()
 		int f = set.bKLL ? (k.inKll? 0: 1) :
 				set.bVK ? (k.inKll? 0: 1) : 0;  // test
 		int o = k.on? 0: 1;
+		bool l2 = set.bL2 && k.hasL2;
+		bool l3 = set.bL3 && k.hasL3;
+
+		//  draw  []
 		const rgb* c;
 		c = &kc[f][o][0];  Rect( x, y, x2, y2,    c->r,c->g,c->b);
 		c = &kc[f][o][1];  Frame(x, y, x2, y2, 1, c->r,c->g,c->b);
 		c = &kc[f][o][2];  Clr(c->r,c->g,c->b);
+		if (l2) {  c = &kl2;  Frame(x, y, x2, y2, 1, c->r,c->g,c->b);  }
+		if (l3) {  c = &kl3;  Frame(x, y, x2, y2, 1, c->r,c->g,c->b);  }
 
-		//  label
+
+		//  label, caption  ----
 		str = set.bKLL ? k.sk : k.s;
-		text.setCharacterSize(k.sc * sc);
-		Txt(x + 4, y + 4);
+		bool ln2 = str.find("\n") != sf::String::InvalidPos;
 
-		//  layer label
-//		if (set.bL2 && k.hasL2)
-		#if 0
-		str = "a";
-		Clr(140,250,60);
-		Txt(x + 4 + 10.5f*sc, y + 4 + set.iFontH);
-		#endif
+		bool lon = !set.bL1 && (l2 || l3);
+		text.setCharacterSize(k.sc * sc);
+		if (!lon)  Txt(x + 4, y + 4);
+
+		//  layer label(s)  ----
+		int xl = x + 4 + (!lon && ln2 ? 18.f*sc : 0);
+		int yl = y + 4 + (!lon ? set.iFontH : 0);
+
+		if (l2)
+		{	str = k.s2;
+			Clr(120,240,60);
+			Txt(xl, yl);
+		}
+		if (l3)
+		{	str = k.s3;
+			Clr(220,220,60);
+			if (l2)  yl += set.iFontH;
+			Txt(xl, yl);
+		}
 
 		//  get max size
 		if (x2 > xMax)  xMax = x2;
@@ -113,7 +133,7 @@ void App::Graph()
 		//  key name
 		std::string sk = keys.vk2str[kc.vk];
 
-		//  replace N_ with Num
+		///****  replace N_ with Num
 		if (sk.length() > 2)
 		if (sk[0]=='N' && sk[1]=='_')
 			sk = "Num " + sk.substr(2);
@@ -121,6 +141,7 @@ void App::Graph()
 			sk[1] = ' ';
 		if (sk == "Backspace")  // too long
 			sk = "Backspc";
+		///****
 
 		str = sk;
 		Clr(200,230,255);  bold = true;
