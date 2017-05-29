@@ -53,7 +53,7 @@ bool Keys::LoadKll(string path, int layer)
 	if (!f.is_open())
 		return false;
 
-//	#define DBG_OUT  // test
+	//#define DBG_OUT  // test
 	#ifdef DBG_OUT
 	ofstream of;
 	of.open(path+"o", ofstream::out);
@@ -133,15 +133,15 @@ bool Keys::LoadKll(string path, int layer)
 					int id = -1;
 					if (p.scan)
 					{
-						#ifdef DBG_OUT
 						id = str2key[p.name]-1;
+						#ifdef DBG_OUT
 						of << "sc: " << p.sscan << "  n: " << p.name << "  id: " << id << "\n";
 						#endif
 					}else{
 						if (p.name.empty())
 							p.name = s.substr(p.mid0, pos - p.mid0);
-						#ifdef DBG_OUT
 						id = str2key[p.sname]-1;
+						#ifdef DBG_OUT
 						of << "sn: " << p.sname << "  n: " << p.name << "  id: " << id << "\n";
 						#endif
 					}
@@ -216,7 +216,9 @@ bool Keys::LoadKll(string path, int layer)
 		}
 	}
 
+	#ifdef DBG_OUT
 	of.close();
+	#endif
 	f.close();
 	return true;
 }
