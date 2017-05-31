@@ -15,6 +15,8 @@ public:
 	void Resize(int x, int y);
 
 	bool KeyDown(const sf::Event::KeyEvent& key);
+	void Mouse(int x, int y);
+
 	void Graph();  // draw graphics
 	void Gui();   // draw Gui
 
@@ -30,4 +32,7 @@ public:
 
 	//  auto max size
 	int xMax = 0, yMax = 0;
+
+	//  mouse pos
+	int xm = 0, ym = 0;
 };

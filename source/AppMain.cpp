@@ -96,6 +96,7 @@ void AppMain::Run()
 
 			switch (e.type)
 			{
+			case Event::MouseMoved:		app->Mouse(e.mouseMove.x, e.mouseMove.y);  break;
 			case Event::KeyPressed:		app->KeyDown(e.key);  break;
 			//case Event::KeyReleased:	app->KeyUp(e.key);  break;
 

@@ -5,7 +5,7 @@
 
 
 //  Key pressed
-///-----------------------------------------------------------------------------
+//-----------------------------------------------
 bool App::KeyDown(const sf::Event::KeyEvent& key)
 {
 	using namespace sf;
@@ -18,4 +18,11 @@ bool App::KeyDown(const sf::Event::KeyEvent& key)
 			ret
 	}
 	ret
+}
+
+//  Mouse move
+//-----------------------------------------------
+void App::Mouse(int x, int y)
+{
+	xm = x;  ym = y;
 }
