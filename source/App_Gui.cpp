@@ -9,13 +9,10 @@ using namespace std;  using namespace ImGui;  using namespace SFML;
 ///-----------------------------------------------------------------------------
 void App::Gui()
 {
-
-	//  dimensions
-	const static int h = 114, w1 = 185, w2 = 110, w3 = 130;
-
 	//  window
-	SetNextWindowPos( ImVec2(0, set.ywSize - h),  ImGuiSetCond_Always);
-	SetNextWindowSize(ImVec2(set.xwSize, h), ImGuiSetCond_Always);
+	SetNextWindowPos( ImVec2(0, set.ywSize - set.yGuiSize), ImGuiSetCond_Always);
+	SetNextWindowSize(ImVec2(set.xGuiSize, set.yGuiSize), ImGuiSetCond_Always);
+	const static int w1 = set.xGui1, w2 = set.xGui2, w3 = set.xGui3;
 
 	bool open = true;
 	const int flags = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize;
@@ -23,11 +20,11 @@ void App::Gui()
 	Begin("Window", &open, flags);
 
 
-	//---------------------------------------------
 	bool e;  // edited, changed
 	int x = 0, w;
 
-	//  1st line  ----
+	//  1st line
+	//---------------------------------------------
 	Sep(1);
 	//w = w1;  e = /*Checkbox*/Text("Layers:", &set.bLayout);  x += w;  SameLine(x);
 	w = w1;  Text("Layers:");  x += w;  SameLine(x);
@@ -45,14 +42,13 @@ void App::Gui()
 	for (int l=0; l < Lnum; ++l)
 	{
 		PushStyleColor(ImGuiCol_Text, Lclr[l]);
-		//RadioButton(Lname[l], &r);
 		Checkbox(Lname[l], Lchk[l]);  x += w;
 		if (l < Lnum-1)  SameLine(x);
 		PopStyleColor();
 	}
 
-
-	//  2nd line  ----
+	//  2nd line
+	//---------------------------------------------
 	x = 0;  Sep(3);
 	//Text(("Keys: "+i2s(keys.keys.size())).c_str());
 
@@ -72,19 +68,16 @@ void App::Gui()
 	{
 		//  fit window to layout  ----
 		set.xwSize = min(2560, max(640, xMax + 30));  //par
-		set.ywSize = yMax + h + 4;
+		set.ywSize = yMax + set.yGuiSize + 4;
 		sf::Vector2u si(set.xwSize, set.ywSize);
 		pWindow->setSize(si);
 		Resize(set.xwSize, set.ywSize);
 	}
 	w = 100;  e = Button("Reset");  if (e)  set.fScale = 1.f;  x += w;
-	w = 75;  SameLine(set.xwSize - w*2);
-	e = Checkbox("vk", &set.bVK);  x += w;
-	SameLine(set.xwSize - w);
-	e = Checkbox("kll", &set.bKLL);  x += w;
 
 
-	//  3rd line  ----
+	//  3rd line
+	//---------------------------------------------
 	x = 0;  Sep(1);
 	w = w1;  e = Checkbox("Simple", &set.bListSimple);  x += w;  SameLine(x);
 
@@ -96,11 +89,21 @@ void App::Gui()
 	if (e)  set.fScale = min(3.f, max(0.1f, set.fScale));
 	PopItemWidth();  x += w + 20;  SameLine(x);
 
-	//  fps
-	w = 75;  SameLine(set.xwSize - w);
-	e = Checkbox("Fps", &set.bFps);  x += w;
+	End();
 
-	//Sep(5);  Line(true);
+
+	//  right window, test
+	//---------------------------------------------
+	int h = set.ywSize - set.yGuiSize + set.iFontGui;
+	SetNextWindowPos( ImVec2(set.xwSize - 120, h), ImGuiSetCond_Always);
+	SetNextWindowSize(ImVec2(set.xGuiSize, h), ImGuiSetCond_Always);
+
+	Begin("WndDbg", &open, flags);
+
+	w = 75;  //SameLine(set.xwSize - w);
+	e = Checkbox("vk", &set.bVK);  x += w;  //SameLine(x);
+	e = Checkbox("kll", &set.bKLL);  x += w;
+	e = Checkbox("Fps", &set.bFps);  x += w;
 
 	End();
 }
