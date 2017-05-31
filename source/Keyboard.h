@@ -19,22 +19,29 @@ struct KeyCode
 	{	return vk < o.vk || sc < o.sc || ext < o.ext;  }
 };
 
-//  keys for layout
+
+//  keys for Gui layout
 struct Key
 {
 	//  from json
-	int x,y, w,h;    // position, dimensions
-	float sc = 1.f;  // scale
+	int x,y, w,h;     // position, dimensions
+	float sc = 1.f;   // scale
 
-	sf::String s;    // caption str
+	sf::String str;     // caption, shown on Gui
+	std::string sJson;  // name from json
+
 	//  var, from key hook
-	bool on = false;  // pressed
+	bool on = false;    // pressed
 
 	//  from kll
-	sf::String sk;   // name for kll
-	bool inKll = false;
-	bool hasL2 = false, hasL3 = false;
-	sf::String s2,s3;   // caption on layer 2 and 3
+	sf::String sKll;     // test name for kll
+	bool inKll = false;  // test kll
+
+	sf::String strL2, strL3;   // caption on layer 2 and 3
+
+	//  vk test
+	bool inVK = false;
+	std::string sVK;
 };
 
 
@@ -45,8 +52,8 @@ public:
 
 	void LoadIndex(int id);
 
-	bool LoadJson(std::string path);
-	bool LoadKll(std::string path, int layer);
+	bool LoadJson(std::string path, bool logOut = true);
+	bool LoadKll(std::string path, int layer, bool logOut = true);
 	void Destroy();
 
 
@@ -59,16 +66,18 @@ public:
 	std::map<std::string, int> str2vk;
 
 
-	//  keyboard layout
+	//  keyboard layout  ----
 	std::vector<Key> keys;
 
-	//  vk code to keys id
+	//  vk code to key id,  for hook
 	//  maps have +1,  0 if not found
 	std::map<int, int> vk2key;
 
 
 	//  str caption (1 row) to keys id, for kll layers
 	std::map<std::string, int> str2key;
+	//  from kll defaultMap
+	std::map<std::string, std::string> kll2scan;
 
 
 	//  keyboard hook

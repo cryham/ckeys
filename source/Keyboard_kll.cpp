@@ -8,12 +8,15 @@ using namespace std;
 
 
 // kll syntax:
-//   pre"sname": pre"name";  #comment\n
-//             ^mid       ^end
+//
+//   pre"sname": pre2"name";  #comment\n
+//   S0x sscan  \mid       \end
+//
 // examples:
-//   S0x39: U"F1";  S0x78: CONS"STOP";  S0x4E: U"P+";
 //   U"A": U"B";  U"1": s(1);  U";": '(';
-//   U"V":SYS"SLEEP";  U"Delete": mouseOut(3, 0, 0);
+//   S0x39: U"F1";  S0x78: CONS"STOP";  S0x4E: U"P+";
+//   U"V":SYS"SLEEP";
+//	 U"Delete": mouseOut(3, 0, 0);
 //   S0x6D: U"Alt"+U"Esc";  S0x77:+ shift();
 
 
@@ -45,7 +48,7 @@ struct SParser
 
 //  load layer, from kll file
 //-----------------------------------------------------------------------------------------------------------
-bool Keys::LoadKll(string path, int layer)
+bool Keys::LoadKll(string path, int layer, bool logOut)
 {
 	//  open
 	ifstream f;
@@ -53,11 +56,9 @@ bool Keys::LoadKll(string path, int layer)
 	if (!f.is_open())
 		return false;
 
-	//#define DBG_OUT  // test
-	#ifdef DBG_OUT
 	ofstream of;
-	of.open(path+"o", ofstream::out);
-	#endif
+	if (logOut)
+		of.open(path+".log", ofstream::out);
 
 	//  read whole file as string s
 	string s;
@@ -134,16 +135,20 @@ bool Keys::LoadKll(string path, int layer)
 					if (p.scan)
 					{
 						id = str2key[p.name]-1;
-						#ifdef DBG_OUT
-						of << "sc: " << p.sscan << "  n: " << p.name << "  id: " << id << "\n";
-						#endif
+						if (layer == 1)
+							kll2scan[p.name] = p.sscan;
+
+						if (logOut)
+							of << "sc: " << p.sscan << "  n: " << p.name <<
+								  "  id: " << id << (id==-1 ? "\t\t!!!" :"") << "\n";
 					}else{
 						if (p.name.empty())
 							p.name = s.substr(p.mid0, pos - p.mid0);
 						id = str2key[p.sname]-1;
-						#ifdef DBG_OUT
-						of << "sn: " << p.sname << "  n: " << p.name << "  id: " << id << "\n";
-						#endif
+
+						if (logOut)
+							of << "sn: " << p.sname << "  n: " << p.name <<
+								  "  id: " << id << (id==-1 ? "\t\t!!!" :"") << "\n";
 					}
 					if (id >= 0)
 					{
@@ -174,16 +179,9 @@ bool Keys::LoadKll(string path, int layer)
 						}
 						///****
 
-						if (layer==2)
-						{
-							k.hasL2 = true;
-							k.s2 = ws;
-						}else
-						if (layer==3)
-						{
-							k.hasL3 = true;
-							k.s3 = ws;
-						}
+						if (layer==2)  k.strL2 = ws;
+						else
+						if (layer==3)  k.strL3 = ws;
 					}
 					p.Reset();
 				}
@@ -215,10 +213,5 @@ bool Keys::LoadKll(string path, int layer)
 			}
 		}
 	}
-
-	#ifdef DBG_OUT
-	of.close();
-	#endif
-	f.close();
 	return true;
 }
