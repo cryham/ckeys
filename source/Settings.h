@@ -8,7 +8,7 @@ namespace sf {  class Window;  }
 class Settings
 {
 public:
-	const static int ver = 90;  // version
+	const static int ver = 100;  // version
 
 	//  main  -----
 	Settings();
@@ -52,4 +52,9 @@ public:
 	bool  bL3 = false;
 
 	char  pathSet[260];
+
+
+	//  GUI dimensions  const  -----
+	const int xGuiSize = 600, yGuiSize = 114,
+		xGui1 = 185, xGui2 = 110, xGui3 = 130;
 };

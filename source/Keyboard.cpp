@@ -32,6 +32,7 @@ void Keys::Destroy()
 	keys.clear();
 	vk2key.clear();
 	str2key.clear();
+	kll2scan.clear();
 }
 
 //  read layouts from file
@@ -53,5 +54,8 @@ void Keys::LoadIndex(int id)
 	//	layer map:  kll name to layer key/function
 	LoadKll(pathData + fname + "layer2.kll", 2);
 	LoadKll(pathData + fname + "layer3.kll", 3);
+
 //	LoadKll(pathData + fname + "overlay.kll", 0);  // Fn to layer num
+//	U"Function2" : layerShift(2);  # hold
+//	U"Function3" : layerShift(3);  # hold
 }

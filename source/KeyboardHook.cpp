@@ -46,6 +46,7 @@ LRESULT CALLBACK KeyHandler(int nCode, WPARAM wp, LPARAM lp)
 		//  layout update
 		if (!kk->keys.empty())
 		{
+			//****  vk map
 			//  map numpad keys  //
 			const static int vkN[VK_DOWN - VK_PRIOR +1] = {
 				VK_NUMPAD9, VK_NUMPAD3, // VK_PRIOR VK_NEXT

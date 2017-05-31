@@ -11,7 +11,7 @@ using namespace std;
 
 //  load layout, read json layout from file
 //-----------------------------------------------------------------------------------------------------------
-bool Keys::LoadJson(string path)
+bool Keys::LoadJson(string path, bool logOut)
 {
 	//  open
 	ifstream f;
@@ -19,10 +19,10 @@ bool Keys::LoadJson(string path)
 	if (!f.is_open())
 		return false;
 
-	//#define DBG  // test
-	#ifdef DBG
-	ofstream of(path + ".log");
-	#endif
+	ofstream of;
+	if (logOut)
+		of.open(path + ".log");
+
 	stringstream ss;  ss << f.rdbuf();
 	string str = ss.str();
 	const char* s = str.c_str();
@@ -62,9 +62,10 @@ bool Keys::LoadJson(string path)
 			//  key text
 			string s = str.substr(t[i].start, t[i].end - t[i].start);
 			if (s[0]>='a' && s[0]<='z')
-				prim = s;
+				prim = s;  // primitive
 			else
 			{
+				string js = s;
 				///****  replace
 				bool ext = false;
 				bool has2 = replK(s, "\\n", "\n");  // key has 2 descr: upper, lower
@@ -72,7 +73,7 @@ bool Keys::LoadJson(string path)
 				string ss = s;  // copy org nameg for vk map
 				replK(s, "Lock", "");  // rem Lock
 				replK(s, "\\\"", "\"");
-				//replK(s, "Space", " ");
+				replK(s, "Space", " ");
 				replK(s, "Delete", "Del");
 				replK(s, "L_", "");  replK(s, "R_", "");  // left, right modifiers
 				if (replK(s, "N_", ""))  ext = true;  // numpad
@@ -91,10 +92,11 @@ bool Keys::LoadJson(string path)
 
 
 				//  setup key  ----
-				Key k;  k.x = x0 + x;  k.y = y0 + y;
+				Key k;
+				k.x = x0 + x;  k.y = y0 + y;
 				k.w = sx * w - se;  k.h = sy * h - se;
 				k.sc = sf * yfnt;
-				k.s = ws;
+				k.str = ws;  k.sJson = js;
 
 				x += w * sx;  // add x
 				w = 1.f;  h = 1.f;  // reset
@@ -110,10 +112,16 @@ bool Keys::LoadJson(string path)
 						ss = ss.substr(0, p);  // first part
 				}
 				int vk = str2vk[ss];
-				#ifdef DBG
-				of << hex << vk << "  " << ss << endl;
-				#endif
-				if (vk)  // if found
+				bool ok = vk > 0;
+				char s[4];
+				sprintf(s, "%02X", vk);
+				k.sVK = !ok ? "!!!" : s;
+				k.inVK = ok;
+
+				if (logOut)
+					of << s << "  " << ss << (vk==0 ? "\t\t!!!" : "") << endl;
+
+				if (ok)  // if found
 				{
 					int kk = keys.size()+1;
 					if (ext)  kk += vk_EXTRA;  // numpad
@@ -132,7 +140,7 @@ bool Keys::LoadJson(string path)
 				///****
 
 				str2key[sk] = keys.size()+1;
-				k.sk = sk;  // test
+				k.sKll = sk;  // for info, kll
 
 
 				keys.push_back(k);  // add key
