@@ -177,6 +177,10 @@ bool Keys::LoadKll(string path, int layer, bool logOut)
 							if (y < 0)  ws = L"M↑";  else  if (y > 0)  ws = L"M↓";  else
 							if (b > 0)  ws = "M" + i2s(b);
 						}
+						//  player
+						if (s=="|>")  ws = L"▶";  if (s=="||")  ws = L"▮▮";  if (s=="[]")  ws = L"◼";
+						if (s==">|" || s=="M Next")  ws = L"▶▮";  if (s==">>")  ws = L"▶▶";
+						if (s=="|<" || s=="M Prev")  ws = L"▮◀";  if (s=="<<")  ws = L"◀◀";
 						///****
 
 						if (layer==2)  k.strL2 = ws;

@@ -80,6 +80,7 @@ bool Settings::Load()
 		a = e->Attribute("iFontGui");  if (a)  iFontGui = atoi(a);
 		a = e->Attribute("scale");   if (a)  fScale = atof(a);
 		a = e->Attribute("combo");   if (a)  iCombo = atoi(a);
+		a = e->Attribute("bold");   if (a)  bBold = atoi(a);
 	}
 	e = root->FirstChildElement("show");
 	if (e)
@@ -123,6 +124,7 @@ bool Settings::Save()
 		e->SetAttribute("iFontGui", iFontGui);
 		e->SetAttribute("scale", f2s(fScale,3).c_str());
 		e->SetAttribute("combo", iCombo);
+		e->SetAttribute("bold", bBold);
 	root->InsertEndChild(e);
 
 	e = xml.NewElement("show");

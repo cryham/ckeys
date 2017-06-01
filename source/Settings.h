@@ -22,6 +22,7 @@ public:
 	//  dimensions  -----
 	int   iFontH = 18;     // font height in list
 	int   iFontGui = 17;   // font height for Gui
+	bool  bBold = false;   // keys font bold
 
 	int   iCombo = 0;      // layout combo, picked id
 
@@ -56,5 +57,6 @@ public:
 
 	//  GUI dimensions  const  -----
 	const int xGuiSize = 600, yGuiSize = 114,
+		xRWndSize = 120,
 		xGui1 = 185, xGui2 = 110, xGui3 = 130;
 };
