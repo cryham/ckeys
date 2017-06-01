@@ -75,7 +75,7 @@ void App::Gui()
 
 	//  scale slider
 	w = w2;  Text(("Scale  "+f2s(set.fScale,2)).c_str());  x += w;  SameLine(x);
-	w = set.xwSize > 720 ? 300 : 150;  //par
+	w = set.xwSize > 720 ? 320 : 150;  //par
 	PushItemWidth(w);  PushAllowKeyboardFocus(false);
 	e = SliderFloat("", &set.fScale, 0.2f, 2.f, "");  PopAllowKeyboardFocus();
 	if (e)  set.fScale = min(3.f, max(0.1f, set.fScale));

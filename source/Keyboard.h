@@ -26,28 +26,36 @@ enum KClr
 //  keys for Gui layout
 struct Key
 {
-	//  from json
+	//  from json  ----
 	int x,y, w,h;     // position, dimensions
 	float sc = 1.f;   // scale
 
 	sf::String str;     // key name and caption, shown on Gui
-	std::string sJson;  // name from json
+	//  optional json
+	sf::String name;    // custom caption on Gui, overrides str
+
+	sf::String Caption()
+	{	return name.isEmpty() ? str : name;  }
+
+	uint16_t scan = 0;  // custom scan code
+
+	std::string sJson;  // test name from json
 
 	//  color set, based on name
 	KClr clr = KC_Normal;
 
-	//  var, from key hook
-	bool on = false;    // pressed
-
-	//  from kll
+	//  from kll  ----
 	sf::String sKll;     // test name for kll
 	bool inKll = false;  // test kll
 
 	sf::String strL2, strL3;   // caption on layer 2 and 3
 
-	//  vk test
+	//  vk test  ----
 	bool inVK = false;
 	std::string sVK;
+
+	//  var, from key hook
+	bool on = false;    // pressed
 };
 
 

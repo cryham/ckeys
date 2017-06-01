@@ -55,8 +55,7 @@ bool Keys::LoadJson(string path, bool logOut)
 	{
 		if (t[i].type == JSMN_ARRAY)
 		{   x = 0;  y += sy;  w = 1.f;  h = 1.f;  // next row
-		}
-		else
+		}else
 		if (t[i].type == JSMN_STRING)
 		{
 			//  key text
@@ -64,8 +63,21 @@ bool Keys::LoadJson(string path, bool logOut)
 			if (s[0]>='a' && s[0]<='z')
 				prim = s;  // primitive
 			else
+			//  custom caption
+			if (s.length() > 2 && s[0]==' ' && s[1]==' ')
 			{
-				string js = s;
+				Key& k = keys.back();
+				s = s.substr(2);
+				sf::String ws = s;
+				//  player
+				if (s=="|>")  ws = L"▶";  if (s=="||")  ws = L"▮▮";  if (s=="[]")  ws = L"◼";
+				if (s==">|" || s=="M Next")  ws = L"▶▮";  if (s==">>")  ws = L"▶▶";
+				if (s=="|<" || s=="M Prev")  ws = L"▮◀";  if (s=="<<")  ws = L"◀◀";
+				k.name = ws;
+				of << "Name: " << s << "\n";
+			}
+			else
+			{	string js = s;
 				///****  replace
 				bool ext = false;
 				bool has2 = replK(s, "\\n", "\n");  // key has 2 descr: upper, lower

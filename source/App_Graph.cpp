@@ -91,7 +91,7 @@ void App::Graph()
 		}
 
 		//  caption  ----
-		str = set.bKLL ? k.sKll : k.str;
+		str = set.bKLL ? k.sKll : k.Caption();
 		bool ln2 = str.find("\n") != sf::String::InvalidPos;
 
 		bool lon = !set.bL1 && (l2 || l3);
@@ -133,7 +133,7 @@ void App::Graph()
 		Clr(150,180,220);  Txt(x, y);  y += 3*yF;
 	}else
 	{	//  1st col  ----
-		str = "Key:  " + km->str;  str.replace("\n","  ");
+		str = "Key:  " + km->Caption();  str.replace("\n","  ");
 		Clr(190,220,250);  Txt(x, y);  y += yF;
 		if (!km->strL2.isEmpty())
 		{	str = "L2:  " + km->strL2;
