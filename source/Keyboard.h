@@ -56,7 +56,7 @@ class Keys
 public:
 	Keys();
 
-	void LoadIndex(int id);
+	void LoadIndex(int id, bool log);
 
 	bool LoadJson(std::string path, bool logOut = true);
 	bool LoadKll(std::string path, int layer, bool logOut = true);

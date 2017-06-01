@@ -26,6 +26,7 @@ void Settings::Default()
 {
 	iFontH = 18;
 	iFontGui = 17;
+	bBold = false;
 
 	iCombo = 0;
 
@@ -37,6 +38,7 @@ void Settings::Default()
 
 	bFps = false;
 	escQuit = false;
+	logOut = false;
 
 	vsync = true;
 	limitFps = 0;
@@ -107,6 +109,11 @@ bool Settings::Load()
 		a = e->Attribute("aliasing");  if (a)  iAliasing = atoi(a);
 		a = e->Attribute("sleep");  if (a)  iSleep = atoi(a);
 	}
+	e = root->FirstChildElement("program");
+	if (e)
+	{	a = e->Attribute("escQuit");  if (a)  escQuit = atoi(a) > 0;
+		a = e->Attribute("logOut");  if (a)  logOut = atoi(a) > 0;
+	}
 	return true;
 }
 
@@ -144,12 +151,16 @@ bool Settings::Save()
 		e->SetAttribute("y", ywPos);
 		e->SetAttribute("sx", xwSize);
 		e->SetAttribute("sy", ywSize);
-		e->SetAttribute("escQuit", escQuit ? 1 : 0);
 
 		e->SetAttribute("vsync", vsync);
 		e->SetAttribute("limitFps", limitFps);
 		e->SetAttribute("aliasing", iAliasing);
 		e->SetAttribute("sleep", iSleep);
+	root->InsertEndChild(e);
+
+	e = xml.NewElement("program");
+		e->SetAttribute("escQuit", escQuit ? 1 : 0);
+		e->SetAttribute("logOut", logOut ? 1 : 0);
 	root->InsertEndChild(e);
 
 	xml.InsertEndChild(root);

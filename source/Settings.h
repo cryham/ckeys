@@ -8,7 +8,7 @@ namespace sf {  class Window;  }
 class Settings
 {
 public:
-	const static int ver = 100;  // version
+	const static int ver = 101;  // version
 
 	//  main  -----
 	Settings();
@@ -39,6 +39,7 @@ public:
 
 	bool  bFps = false;    // show Fps
 	bool  escQuit = false;
+	bool  logOut = false;
 
 	bool  vsync = true;    // screen advanced
 	int   limitFps = 0;

@@ -36,7 +36,7 @@ void Keys::Destroy()
 }
 
 //  read layouts from file
-void Keys::LoadIndex(int id)
+void Keys::LoadIndex(int id, bool log)
 {
 	if (id >= files.size())
 		return;
@@ -46,14 +46,14 @@ void Keys::LoadIndex(int id)
 
 	//  load json
 	string fname = files[id];
-	LoadJson(pathData + fname + ".json");
+	LoadJson(pathData + fname + ".json", log);
 
 	//  load klls
 	//	default map:  scan code to kll name
-	LoadKll(pathData + "defaultMap" + fname + ".kll", 1);
+	LoadKll(pathData + "defaultMap" + fname + ".kll", 1, log);
 	//	layer map:  kll name to layer key/function
-	LoadKll(pathData + fname + "layer2.kll", 2);
-	LoadKll(pathData + fname + "layer3.kll", 3);
+	LoadKll(pathData + fname + "layer2.kll", 2, log);
+	LoadKll(pathData + fname + "layer3.kll", 3, log);
 
 //	LoadKll(pathData + fname + "overlay.kll", 0);  // Fn to layer num
 //	U"Function2" : layerShift(2);  # hold
