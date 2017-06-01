@@ -30,7 +30,9 @@ public:
 
 	Keys keys;
 
-	bool options = false;  // window
+	//  gui windows
+	bool options = false;
+	bool graphics = false;
 
 	//  auto max size
 	int xMax = 0, yMax = 0;

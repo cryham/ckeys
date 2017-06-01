@@ -10,8 +10,8 @@ using namespace std;  using namespace ImGui;  using namespace SFML;
 void App::Gui()
 {
 	//  window
-	SetNextWindowPos( ImVec2(0, set.ywSize - set.yGuiSize), ImGuiSetCond_Always);
-	SetNextWindowSize(ImVec2(set.xGuiSize, set.yGuiSize), ImGuiSetCond_Always);
+	SetNextWindowPos( ImVec2(set.xRWndSize, set.ywSize - set.yGuiSize), ImGuiSetCond_Always);
+	SetNextWindowSize(ImVec2(set.xGuiSize-set.xRWndSize, set.yGuiSize), ImGuiSetCond_Always);
 	const static int w1 = set.xGui1, w2 = set.xGui2, w3 = set.xGui3;
 
 	bool open = true;
@@ -25,7 +25,7 @@ void App::Gui()
 	//  1st line
 	//---------------------------------------------
 	Sep(1);
-	w = w1;  Text("Layers:");  x += w;  SameLine(x);
+	w = w2;  Text("Layers");  x += w;  SameLine(x);
 	w = 60;
 	const int Lnum = 3;
 	bool* Lchk[Lnum] = {&set.bL1, &set.bL2, &set.bL3};
@@ -47,16 +47,13 @@ void App::Gui()
 	//---------------------------------------------
 	x = 0;  Sep(3);
 	//Text(("Keys: "+i2s(keys.keys.size())).c_str());
-
-	//  checks
-	w = w1;  e = Checkbox("Pressed List", &set.bList);  x += w;  SameLine(x);
-	w = w2;  e = Checkbox("Layout", &set.bLayout);  x += w;  SameLine(x);
+	w = w2;  Text("Layout");  x += w;  SameLine(x);
 
 	//  combo
 	w = w3;  PushItemWidth(w);
 	e = Combo("Cmb", &set.iCombo, "default\0ck3\0ck4\0\0");  //todo from keys.files[]
-	if (e)  keys.LoadIndex(set.iCombo);
-	PopItemWidth();  x += w + 40;  x = 475;  SameLine(x);
+	if (e)  keys.LoadIndex(set.iCombo, set.logOut);
+	PopItemWidth();  x += w + 40;  x = 315;  SameLine(x);
 
 	//  buttons
 	w = 50;  e = Button("Fit");  x += w;  SameLine(x);
@@ -75,7 +72,6 @@ void App::Gui()
 	//  3rd line
 	//---------------------------------------------
 	x = 0;  Sep(1);
-	w = w1;  e = Checkbox("Simple", &set.bListSimple);  x += w;  SameLine(x);
 
 	//  scale slider
 	w = w2;  Text(("Scale  "+f2s(set.fScale,2)).c_str());  x += w;  SameLine(x);
@@ -88,30 +84,35 @@ void App::Gui()
 	End();
 
 
-	//  right window, test
+	//  left window, menu tabs
 	//---------------------------------------------
-	int h = set.ywSize - set.yGuiSize + set.iFontGui;
-	SetNextWindowPos( ImVec2(set.xwSize - set.xRWndSize, h), ImGuiSetCond_Always);
+	int h = set.ywSize - set.yGuiSize;
+	SetNextWindowPos( ImVec2(0, h), ImGuiSetCond_Always);
 	SetNextWindowSize(ImVec2(set.xRWndSize, h), ImGuiSetCond_Always);
 	Begin("WndDbg", &open, flags);
 
-	w = 90;  x = 0;  //y += 3*set.iFontGui;
-	Sep(3*set.iFontGui);
+	Sep(1);
 	e = Button("Options");  if (e)  options = !options;
+	Sep(1);
+	e = Button("Graphics");  if (e)  graphics = !graphics;
+	Sep(1);
+	e = Button("Help");  //if (e)  graphics = !graphics;
 
 	End();
 
 
-	//  Options window
+	//  Graphics window
 	//---------------------------------------------
-	if (options)
-	{
-		SetNextWindowPos( ImVec2(0, set.ywSize - set.yGuiSize), ImGuiSetCond_Always);
-		SetNextWindowSize(ImVec2(set.xwSize - set.xRWndSize, set.yGuiSize), ImGuiSetCond_Always);
-		Begin("OptionsWnd", &open, flags);
+	const int xt = 120,
+		xts = 90, xs = 100, ws = xs+30;
 
-		const int xt = 120,
-			xts = 90, xs = 100, ws = xs+30;
+	if (graphics)
+	{
+		SetNextWindowPos( ImVec2(set.xRWndSize, set.ywSize - set.yGuiSize), ImGuiSetCond_Always);
+		SetNextWindowSize(ImVec2(set.xwSize - set.xRWndSize, set.yGuiSize), ImGuiSetCond_Always);
+		Begin("GraphicsWnd", &open, flags);
+
+		Sep(1);
 		x = 0;  w = xt;  Text("Font: ");  x += w;  SameLine(x);
 		PushItemWidth(xs);
 		e = SliderInt("Font", &set.iFontH, 4, 30);  x += ws;  SameLine(x);
@@ -120,24 +121,47 @@ void App::Gui()
 		PopItemWidth();
 		e = Checkbox("Bold", &set.bBold);  x += w;  //SameLine(x);
 
+		Sep(3);
 		x = 0;  w = xt;  Text("Graphics: ");  x += w;  SameLine(x);
 		w = xt;  e = Checkbox("Vsync", &set.vsync);  x += w;  SameLine(x);
 		PushItemWidth(xs);
 		Text("Limit Fps");  x += xts;  SameLine(x);
 		e = SliderInt("lim", &set.limitFps, 0, 200);  x += ws;  SameLine(x);
-		Text("Aliasing");  x += xts;  SameLine(x);
-		e = SliderInt("al", &set.iAliasing, 0, 16);  x += ws;  SameLine(x);
 		Text("Sleep");  x += xts;  SameLine(x);
-		e = SliderInt("sl", &set.iSleep, 0, 30);  x += ws;  //SameLine(x);
+		e = SliderInt("sl", &set.iSleep, 0, 30);  x += ws;  SameLine(x);
+		Text("Aliasing");  x += xts;  SameLine(x);
+		e = SliderInt("al", &set.iAliasing, 0, 16);  x += ws;  //SameLine(x);
 		PopItemWidth();
 
+		End();
+	}
+
+	//  Options window
+	//---------------------------------------------
+	if (options)
+	{
+		SetNextWindowPos( ImVec2(set.xRWndSize, set.ywSize - set.yGuiSize), ImGuiSetCond_Always);
+		SetNextWindowSize(ImVec2(set.xwSize - set.xRWndSize, set.yGuiSize), ImGuiSetCond_Always);
+		Begin("OptionsWnd", &open, flags);
+
+		Sep(1);
+		x = 0;  w = xt;  //Text(": ");  x += w;  SameLine(x);
+		w = w1;  e = Checkbox("Pressed List", &set.bList);  x += w;  SameLine(x);
+		w = w2;  e = Checkbox("Simple", &set.bListSimple);  x += w;  SameLine(x);
+		w = w2;  e = Checkbox("Layout", &set.bLayout);  x += w;  //SameLine(x);
+
+		Sep(3);
 		x = 0;  w = xt;  Text("Test: ");  x += w;  SameLine(x);
 		w = 90;
 		e = Checkbox("VK", &set.bVK);  x += w;  SameLine(x);
 		e = Checkbox("KLL", &set.bKLL);  x += w;  SameLine(x);
-		e = Checkbox("Fps", &set.bFps);  x += w;  SameLine(x);
-		w = xt;
+		e = Checkbox("Fps", &set.bFps);  x += w;  //SameLine(x);
+
+		Sep(1);
+		x = 0;  w = xt;  Text("Program: ");  x += w;  SameLine(x);
+		w = 120;
 		e = Checkbox("Esc Quits", &set.escQuit);  x += w;  SameLine(x);
+		e = Checkbox("Log Output", &set.logOut);  x += w;  SameLine(x);
 
 		End();
 	}

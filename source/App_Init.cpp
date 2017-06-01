@@ -15,7 +15,7 @@ bool App::Init()
 
 	keys.Init();
 
-	keys.LoadIndex(set.iCombo);
+	keys.LoadIndex(set.iCombo, set.logOut);
 
 	keys.Hook();
 
