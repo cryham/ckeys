@@ -89,7 +89,7 @@
 	  "x": 0.05,
 	  "h": 0.75
     },
-    "Fn"
+    "Display"
   ],
   [
     "~\n`",
@@ -112,7 +112,7 @@
 	{
 	  "x": 0.05
     },
-    "Home",
+    "Esc",
 	{
 	  "x": 0.20
     },
@@ -145,13 +145,13 @@
 	{
 	  "x": 0.05
     },
-    "PgUp",
+    "Backspace",
 	{
 	  "x": 0.20
     },
-    "N_7\nHome",
-	"N_8\nUp",
-	"N_9\nPgUp",
+    "Home",
+	"Up",
+	"PgUp",
 	{
 	  "h": 2
     },
@@ -180,13 +180,13 @@
 	{
 	  "x": 0.05
     },
-    "PgDn",
+    "N_Enter",
 	{
 	  "x": 0.20
     },
-    "N_4\nLeft",
-	"N_5",
-	"N_6\nRight"
+    "Left",
+	"Delete",
+	"Right"
   ],
   [
     {
@@ -207,17 +207,17 @@
 	  "w": 2
     },
     "R_Shift",
-	"Up",
+	"",
 	{
 	  "x": 0.05
     },
-    "End",
+    "R_Shift",
 	{
 	  "x": 0.20
     },
-    "N_1\nEnd",
-	"N_2\nDown",
-	"N_3\nPgDn",
+    "End",
+	"Down",
+	"PgDn",
 	{
 	  "h": 2
     },
@@ -229,7 +229,7 @@
     },
     "L_Ctrl",
 	"L_Win",
-	"|\n\\",
+	"L3",
 	{
 	  "w": 1.25
     },
@@ -247,18 +247,18 @@
 	{
 	  "w": 1.25
     },
-    "Insert",
-	"Delete",
-	"Right",
-	"Down",
+    "R_Ctrl",
+	"R_Ctrl",
+	"L3",
+	"L2",
 	{
 	  "x": 0.05
     },
-    "Left",
+    "R_Ctrl",
 	{
 	  "x": 0.20,
 	  "w": 2
     },
-    "N_0\nIns",
-	"N_.\nDel"
+    "Insert",
+	"CLEAR"
   ]
