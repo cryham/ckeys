@@ -1,0 +1,49 @@
+Name = CK4-L2-sequences;
+Version = 4.05;
+Author = "CryHam";
+KLL = 0.3c;
+Date = 2017-04-21;
+
+
+#--- sequences ---
+
+#  1/4
+U"1":s(0); U"2":s(1); U"3":s(2);
+U"Q":s(3); U"W":s(4);
+
+#  2/4
+U"E":s(5);
+U";": s(6);  U"'": s(7);
+U"/": s(8);  U"\": s(9);
+
+#  3/4
+U"Home": s(10);  U"Left": s(11);
+U"End": s(12);   U"Insert": s(13);
+U"A":s(14); 
+
+#  4/4
+U"S":s(15); U"D":s(16);
+U"Z":s(17); U"X":s(18); U"C":s(19);
+
+
+#  protocol --
+U",": BootProtocol();  U".": NKROProtocol();
+	  
+#  symbols ( ) % &
+U"[":'(';  U"]":')';  U"-":'%';  U"=":'&';
+
+
+#  no-
+#U";":'%';  U"'":'&';
+#U"P/":'(';  U"P*":')';
+
+#U"1":U"F1";  U"4":U"F4";  U"7":U"F7";  U"0":U"F10";  
+#U"2":U"F2";  U"5":U"F5";  U"8":U"F8";  U"-":U"F11";
+#U"3":U"F3";  U"6":U"F6";  U"9":U"F9";  U"=":U"F12";
+
+
+#  Num Caps Scroll
+U"F10": U"NumLock";
+U"F11": U"CapsLock";
+U"F12": U"ScrollLock";
+U"PrintScreen": U"Pause";

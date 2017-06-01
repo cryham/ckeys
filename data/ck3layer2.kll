@@ -1,0 +1,48 @@
+Name = CK3-L2-sequences;
+Version = 3.18;
+Author = "CryHam";
+KLL = 0.3c;
+Date = 2016-05-07;
+
+
+#--- sequences ---
+
+#  1/4
+U"1":s(0); U"2":s(1); U"3":s(2);
+U"Q":s(3); U"W":s(4);
+
+#  2/4
+U"E":s(5);  U"\": s(6);
+U"Backspace": s(7);   U"Home": s(8);
+U"PEnter": s(9);
+
+#  3/4
+U"Left": s(10);
+U";":s(11); U"'":s(12);
+U"/":s(13); U"A":s(14);
+
+#  4/4
+U"S":s(15); U"D":s(16);
+U"Z":s(17); U"X":s(18); U"C":s(19);
+
+
+#  protocol --
+U",": BootProtocol();  U".": NKROProtocol();
+	  
+#  symbols ( ) % &
+U"[":'(';  U"]":')';  U"-":'%';  U"=":'&';
+U"P/":'(';  U"P*":')';
+
+
+#  digits as function
+#U"1":U"F1";  U"4":U"F4";  U"7":U"F7";  U"0":U"F10";  
+#U"2":U"F2";  U"5":U"F5";  U"8":U"F8";  U"-":U"F11";
+#U"3":U"F3";  U"6":U"F6";  U"9":U"F9";  U"=":U"F12";
+
+#  locks
+U"PrintScreen": U"NumLock";
+U"Pause": U"CapsLock";
+
+#-- s() all keys here wont work with L2 in menu
+#U"Function2" : layerShift(4);
+#layerShift(2) : layerShift(4);
