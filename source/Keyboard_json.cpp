@@ -99,12 +99,10 @@ bool Keys::LoadJson(string path, bool logOut)
 				k.sc = sf * yfnt;
 				k.str = ws;  k.sJson = js;
 				//  clr
-				if (s.length()==2 && s[0]=='L' && s[1]>='0' && s[1]<='9')
-					k.clr = KC_Layer;
-				else  if (s=="Display")
-					k.clr = KC_Display;
-				else
-					k.clr = KC_Normal;
+				if (s=="L2")  k.clr = KC_Layer2;  else
+				if (s=="L3")  k.clr = KC_Layer3;  else
+				if (s=="Display")  k.clr = KC_Display;
+				else  k.clr = KC_Normal;
 
 				x += w * sx;  // add x
 				w = 1.f;  h = 1.f;  // reset

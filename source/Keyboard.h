@@ -20,7 +20,7 @@ struct KeyCode
 };
 
 enum KClr
-{	KC_Normal=0, KC_Missing, KC_Layer, KC_Display  };
+{	KC_Normal=0, KC_Missing,  KC_Layer2, KC_Layer3, KC_Display, KC_ALL  };
 
 
 //  keys for Gui layout
@@ -30,7 +30,7 @@ struct Key
 	int x,y, w,h;     // position, dimensions
 	float sc = 1.f;   // scale
 
-	sf::String str;     // caption, shown on Gui
+	sf::String str;     // key name and caption, shown on Gui
 	std::string sJson;  // name from json
 
 	//  color set, based on name

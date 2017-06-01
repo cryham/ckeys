@@ -34,8 +34,6 @@ void App::Gui()
 		ImVec4(0.3f, 0.6f, 1.0f, 1.f),
 		ImVec4(0.4f, 0.85f, 0.2f, 1.f),
 		ImVec4(0.8f, 0.8f, 0.2f, 1.f)};
-		//ImVec4(1.0f, 0.5f, 0.2f, 1.f),
-		//ImVec4(0.8f, 0.6f, 1.0f, 1.f)};
 
 	for (int l=0; l < Lnum; ++l)
 	{
@@ -143,9 +141,4 @@ void App::Gui()
 
 		End();
 	}
-//	<ckeys ver="100">
-//		<dim iFontH="18" iFontGui="17" scale="1.000" combo="2" bold="1"/>
-//		<show list="1" simple="1" layout="1" fps="0" vk="0" kll="0" L1="0" L2="1" L3="0"/>
-//		<window x="348" y="473" sx="1136" sy="444" escQuit="1" vsync="1" limitFps="0" aliasing="8" sleep="5"/>
-//	</ckeys>
 }
