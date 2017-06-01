@@ -115,7 +115,7 @@ bool Keys::LoadJson(string path, bool logOut)
 				bool ok = vk > 0;
 				char s[4];
 				sprintf(s, "%02X", vk);
-				k.sVK = !ok ? "!!!" : s;
+				k.sVK = !ok ? "" : s;
 				k.inVK = ok;
 
 				if (logOut)
@@ -140,7 +140,7 @@ bool Keys::LoadJson(string path, bool logOut)
 				///****
 
 				str2key[sk] = keys.size()+1;
-				k.sKll = sk;  // for info, kll
+				k.sKll = sk;  // for info
 
 
 				keys.push_back(k);  // add key

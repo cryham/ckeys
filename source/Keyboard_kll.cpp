@@ -140,7 +140,7 @@ bool Keys::LoadKll(string path, int layer, bool logOut)
 
 						if (logOut)
 							of << "sc: " << p.sscan << "  n: " << p.name <<
-								  "  id: " << id << (id==-1 ? "\t\t!!!" :"") << "\n";
+								  "  id: " << id << (id==-1 ? "\t\t!!!" : "") << "\n";
 					}else{
 						if (p.name.empty())
 							p.name = s.substr(p.mid0, pos - p.mid0);
@@ -148,7 +148,7 @@ bool Keys::LoadKll(string path, int layer, bool logOut)
 
 						if (logOut)
 							of << "sn: " << p.sname << "  n: " << p.name <<
-								  "  id: " << id << (id==-1 ? "\t\t!!!" :"") << "\n";
+								  "  id: " << id << (id==-1 ? "\t\t!!!" : "") << "\n";
 					}
 					if (id >= 0)
 					{
