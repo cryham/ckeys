@@ -70,6 +70,9 @@ public:
 	bool LoadKll(std::string path, int layer, bool logOut = true);
 	void Destroy();
 
+	//  replace
+	void ReplacePlayer(const std::__cxx11::string& s, sf::String& ws);
+
 
 	bool Init();
 	std::string pathData = "data/";  // path to data dir

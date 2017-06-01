@@ -9,6 +9,14 @@
 using namespace std;
 
 
+//  player
+void Keys::ReplacePlayer(const std::string& s, sf::String& ws)
+{
+	if (s=="|>")  ws = L"▶";  if (s=="||")  ws = L"▮▮";  if (s=="[]")  ws = L"◼";
+	if (s==">|" || s=="M Next")  ws = L"▶▮";  if (s==">>")  ws = L"▶▶";
+	if (s=="|<" || s=="M Prev")  ws = L"▮◀";  if (s=="<<")  ws = L"◀◀";
+}
+
 //  load layout, read json layout from file
 //-----------------------------------------------------------------------------------------------------------
 bool Keys::LoadJson(string path, bool logOut)
@@ -69,10 +77,7 @@ bool Keys::LoadJson(string path, bool logOut)
 				Key& k = keys.back();
 				s = s.substr(2);
 				sf::String ws = s;
-				//  player
-				if (s=="|>")  ws = L"▶";  if (s=="||")  ws = L"▮▮";  if (s=="[]")  ws = L"◼";
-				if (s==">|" || s=="M Next")  ws = L"▶▮";  if (s==">>")  ws = L"▶▶";
-				if (s=="|<" || s=="M Prev")  ws = L"▮◀";  if (s=="<<")  ws = L"◀◀";
+				ReplacePlayer(s,ws);
 				k.name = ws;
 				of << "Name: " << s << "\n";
 			}
