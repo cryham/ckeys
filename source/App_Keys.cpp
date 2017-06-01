@@ -10,6 +10,19 @@ bool App::KeyDown(const sf::Event::KeyEvent& key)
 {
 	using namespace sf;
 
+	//  close options window
+	if (options)
+	{
+		switch (key.code)
+		{
+		case Keyboard::Escape:
+		case Keyboard::Return:
+		case Keyboard::Space:
+			options = false;
+		}
+		ret
+	}
+
 	switch (key.code)
 	{
 		//  Esc - Close

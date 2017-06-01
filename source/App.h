@@ -30,6 +30,8 @@ public:
 
 	Keys keys;
 
+	bool options = false;  // window
+
 	//  auto max size
 	int xMax = 0, yMax = 0;
 
