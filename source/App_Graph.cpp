@@ -29,20 +29,31 @@ void App::Graph()
 	struct rgb{
 		uint8_t r,g,b;
 	};
-	//  [default,missing,], [pressed/normal], [rect,frame,text]
-	const static rgb kc[2][2][3] = {{
+//	ImGui::ColorConvertHSVtoRGB(float h, float s, float v, float& out_r, float& out_g, float& out_b)
+	//  [KClr], [pressed/normal], [rect,frame,text]
+	const static rgb kc[4][2][3] = {{
 		{{ 77,115,153},{204,235,255},{227,242,255}},  // cyan
 		{{ 26, 51, 77},{ 51,102,153},{179,217,254}}},{
-	//	{{ 95,115,163},{215,235,255},{222,242,255}},  // steel
-	//	{{ 35, 51, 87},{ 82,102,163},{197,217,254}}}};
+		{{ 95,115,163},{215,235,255},{222,242,255}},  // steel
+		{{ 35, 51, 87},{ 82,102,163},{197,217,254}}},{
 		{{105,115,163},{225,235,255},{222,242,255}},  // viol blue
-		{{ 55, 51, 97},{112,102,183},{197,217,254}}}};
+		{{ 45, 41,107},{112,102,193},{227,217,254}}},{
+		{{ 65, 47, 32},{122,102, 83},{254,187,104}},  // orange
+		{{ 65, 47, 32},{122,102, 83},{254,187,104}}}};
+//		{{165,115, 63},{255,235,155},{255,242,155}},  // orange
+//		{{ 95, 51, 27},{182,112, 83},{254,217,154}}}};
+//		{{ 77,153,153},{204,255,255},{217,255,255}},  // cyan
+//		{{ 26, 77, 77},{ 51,152,153},{179,255,255}}}};
+//		{{123, 65, 25},{215,125, 35},{255,222, 42}},  // orange
+//		{{ 83, 45, 25},{115, 65, 35},{155, 82, 42}}}};
 	const static rgb  // layer frame
 		kl2 = {60,150,20}, kl3 = {130,130,20}, kov = {220,230,240};
 	xMax = 0;  yMax = 0;
 
 	//  key under mouse, for info
 	Key* km = 0;
+	if (set.bBold)
+		bold = true;
 
 	if (set.bLayout)
 	for (auto& k : keys.keys)
@@ -51,8 +62,11 @@ void App::Graph()
 			x2 = x + k.w * sc, y2 = y + k.h * sc;
 
 		//  key
-		int f = set.bKLL ? (k.inKll? 0: 1) :
-				set.bVK ? (k.inVK? 0: 1) : 0;  // test
+		int f = k.clr, r = 1;
+		if (f == KC_Normal)
+		if (set.bKLL && !k.inKll ||
+			set.bVK && !k.inVK)  f = KC_Missing;
+
 		int o = k.on? 0: 1;
 		bool l2 = set.bL2 && !k.strL2.isEmpty();
 		bool l3 = set.bL3 && !k.strL3.isEmpty();
@@ -60,12 +74,12 @@ void App::Graph()
 		//  draw  []
 		const rgb* c;
 		c = &kc[f][o][0];  Rect( x, y, x2, y2,    c->r,c->g,c->b);
-		c = &kc[f][o][1];  Frame(x, y, x2, y2, 1, c->r,c->g,c->b);
+		c = &kc[f][o][1];  Frame(x, y, x2, y2, r, c->r,c->g,c->b);
 		c = &kc[f][o][2];  Clr(c->r,c->g,c->b);
 		if (!k.on)
 		{
-			if (l2) {  c = &kl2;  Frame(x, y, x2, y2, 1, c->r,c->g,c->b);  }
-			if (l3) {  c = &kl3;  Frame(x, y, x2, y2, 1, c->r,c->g,c->b);  }
+			if (l2) {  c = &kl2;  Frame(x, y, x2, y2, r, c->r,c->g,c->b);  }
+			if (l3) {  c = &kl3;  Frame(x, y, x2, y2, r, c->r,c->g,c->b);  }
 		}
 		//  mouse over
 		if (xm >= x && xm <= x2 && ym >= y && ym <= y2)

@@ -19,6 +19,9 @@ struct KeyCode
 	{	return vk < o.vk || sc < o.sc || ext < o.ext;  }
 };
 
+enum KClr
+{	KC_Normal=0, KC_Missing, KC_Layer, KC_Display  };
+
 
 //  keys for Gui layout
 struct Key
@@ -29,6 +32,9 @@ struct Key
 
 	sf::String str;     // caption, shown on Gui
 	std::string sJson;  // name from json
+
+	//  color set, based on name
+	KClr clr = KC_Normal;
 
 	//  var, from key hook
 	bool on = false;    // pressed

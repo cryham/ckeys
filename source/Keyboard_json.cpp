@@ -83,6 +83,7 @@ bool Keys::LoadJson(string path, bool logOut)
 				if (found(s, "Down"))   ws = L"↓";
 				if (!found(s, "PgUp") && found(s, "Up"))  ws = L"↑";
 				if (found(s, "CLEAR"))   ws = "5";
+				if (s=="Display")   ws = L"❏";  //▤❏◾
 				///****
 
 				//  font scale
@@ -97,6 +98,13 @@ bool Keys::LoadJson(string path, bool logOut)
 				k.w = sx * w - se;  k.h = sy * h - se;
 				k.sc = sf * yfnt;
 				k.str = ws;  k.sJson = js;
+				//  clr
+				if (s.length()==2 && s[0]=='L' && s[1]>='0' && s[1]<='9')
+					k.clr = KC_Layer;
+				else  if (s=="Display")
+					k.clr = KC_Display;
+				else
+					k.clr = KC_Normal;
 
 				x += w * sx;  // add x
 				w = 1.f;  h = 1.f;  // reset
