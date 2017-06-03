@@ -18,72 +18,76 @@ void App::Gui()
 	const ImVec2 sizeBtm = ImVec2(set.xwSize - set.xRWndSize, set.yGuiSize);
 	const static int w1 = set.xGui1, w2 = set.xGui2, w3 = set.xGui3;
 
-	//  window
-	SetNextWindowPos(posBtm, always);
-	SetNextWindowSize(ImVec2(set.xGuiSize-set.xRWndSize, set.yGuiSize), always);
-	Begin("Window", &open, flags);
-
-
 	bool e;  // edited, changed
 	int x = 0, w;
 
-	//  1st line
-	//---------------------------------------------
-	Sep(1);
-	w = w2;  Text("Layers");  x += w;  SameLine(x);
-	w = 60;
-	const int Lnum = 3;
-	bool* Lchk[Lnum] = {&set.bL1, &set.bL2, &set.bL3};
-	const char* Lname[Lnum] = {"L1", "L2", "L3"};
-	const ImVec4 Lclr[Lnum] = {
-		ImVec4(0.3f, 0.6f, 1.0f, 1.f),
-		ImVec4(0.4f, 0.85f, 0.2f, 1.f),
-		ImVec4(0.8f, 0.8f, 0.2f, 1.f)};
 
-	for (int l=0; l < Lnum; ++l)
+	///  main window
+	//---------------------------------------------
+	if (!options && !graphics)
 	{
-		PushStyleColor(ImGuiCol_Text, Lclr[l]);
-		Checkbox(Lname[l], Lchk[l]);  x += w;
-		if (l < Lnum-1)  SameLine(x);
-		PopStyleColor();
+		SetNextWindowPos(posBtm, always);
+		SetNextWindowSize(ImVec2(set.xGuiSize-set.xRWndSize, set.yGuiSize), always);
+		Begin("Window", &open, flags);
+
+		//  1st line
+		//---------------------------------------------
+		Sep(1);
+		w = w2;  Text("Layers");  x += w;  SameLine(x);
+		w = 60;
+		const int Lnum = 3;
+		bool* Lchk[Lnum] = {&set.bL1, &set.bL2, &set.bL3};
+		const char* Lname[Lnum] = {"L1", "L2", "L3"};
+		const ImVec4 Lclr[Lnum] = {
+			ImVec4(0.3f, 0.6f, 1.0f, 1.f),
+			ImVec4(0.4f, 0.85f, 0.2f, 1.f),
+			ImVec4(0.8f, 0.8f, 0.2f, 1.f)};
+
+		for (int l=0; l < Lnum; ++l)
+		{
+			PushStyleColor(ImGuiCol_Text, Lclr[l]);
+			Checkbox(Lname[l], Lchk[l]);  x += w;
+			if (l < Lnum-1)  SameLine(x);
+			PopStyleColor();
+		}
+
+		//  2nd line
+		//---------------------------------------------
+		x = 0;  Sep(3);
+		w = w2;  Text("Layout");  x += w;  SameLine(x);
+
+		//  combo
+		w = w3;  PushItemWidth(w);
+		e = Combo("Cmb", &set.iCombo, "default\0ck3\0ck4\0\0");  //todo from keys.files[]
+		if (e)  keys.LoadIndex(&set);
+		PopItemWidth();  x += w + 40;  x = 315;  SameLine(x);
+
+		//  buttons
+		w = 50;  e = Button("Fit");  x += w;  SameLine(x);
+		if (e && set.bLayout && xMax > 0)
+		{
+			//  fit window to layout  ----
+			set.xwSize = min(2560, max(640, xMax + 30));  //par
+			set.ywSize = yMax + set.yGuiSize + 4;
+			sf::Vector2u si(set.xwSize, set.ywSize);
+			pWindow->setSize(si);
+			Resize(set.xwSize, set.ywSize);
+		}
+		w = 100;  e = Button("Reset");  if (e)  set.fScale = 1.f;  x += w;
+
+
+		//  3rd line
+		//---------------------------------------------
+		x = 0;  Sep(1);  //  scale slider
+		w = w2;  Text(("Scale  "+f2s(set.fScale,2)).c_str());  x += w;  SameLine(x);
+		w = set.xwSize > 720 ? 320 : 150;  //par
+		PushItemWidth(w);  PushAllowKeyboardFocus(false);
+		e = SliderFloat("", &set.fScale, 0.2f, 2.f, "");  PopAllowKeyboardFocus();
+		if (e)  set.fScale = min(3.f, max(0.1f, set.fScale));
+		PopItemWidth();  x += w + 20;  SameLine(x);
+
+		End();
 	}
-
-	//  2nd line
-	//---------------------------------------------
-	x = 0;  Sep(3);
-	w = w2;  Text("Layout");  x += w;  SameLine(x);
-
-	//  combo
-	w = w3;  PushItemWidth(w);
-	e = Combo("Cmb", &set.iCombo, "default\0ck3\0ck4\0\0");  //todo from keys.files[]
-	if (e)  keys.LoadIndex(set.iCombo, set.logOut);
-	PopItemWidth();  x += w + 40;  x = 315;  SameLine(x);
-
-	//  buttons
-	w = 50;  e = Button("Fit");  x += w;  SameLine(x);
-	if (e && set.bLayout && xMax > 0)
-	{
-		//  fit window to layout  ----
-		set.xwSize = min(2560, max(640, xMax + 30));  //par
-		set.ywSize = yMax + set.yGuiSize + 4;
-		sf::Vector2u si(set.xwSize, set.ywSize);
-		pWindow->setSize(si);
-		Resize(set.xwSize, set.ywSize);
-	}
-	w = 100;  e = Button("Reset");  if (e)  set.fScale = 1.f;  x += w;
-
-
-	//  3rd line
-	//---------------------------------------------
-	x = 0;  Sep(1);  //  scale slider
-	w = w2;  Text(("Scale  "+f2s(set.fScale,2)).c_str());  x += w;  SameLine(x);
-	w = set.xwSize > 720 ? 320 : 150;  //par
-	PushItemWidth(w);  PushAllowKeyboardFocus(false);
-	e = SliderFloat("", &set.fScale, 0.2f, 2.f, "");  PopAllowKeyboardFocus();
-	if (e)  set.fScale = min(3.f, max(0.1f, set.fScale));
-	PopItemWidth();  x += w + 20;  SameLine(x);
-
-	End();
 
 
 	//  left window, menu tabs
@@ -94,11 +98,11 @@ void App::Gui()
 	Begin("WndDbg", &open, flags);
 
 	Sep(1);
-	e = Button("Options");  if (e)  options = !options;
-	Sep(1);
-	e = Button("Graphics");  if (e)  graphics = !graphics;
-	Sep(1);
 	e = Button("Help");  if (e)  help = !help;
+	Sep(1);
+	e = Button("Options");  if (e) {  options = !options;  graphics = 0;  }
+	Sep(1);
+	e = Button("Graphics");  if (e) {  graphics = !graphics;  options = 0;  }
 
 	End();
 
@@ -162,6 +166,29 @@ void App::Gui()
 		w = xt;  Text("Program: ");  x += w;  SameLine(x);
 		w = w1;  e = Checkbox("Esc Quits", &set.escQuit);  x += w;  SameLine(x);
 		w = w1;  e = Checkbox("Log Output", &set.logOut);  x += w;
+
+		End();
+	}
+
+	//  Help window
+	//---------------------------------------------
+	if (help)
+	{
+		SetNextWindowPos(ImVec2(0,0), always);
+		SetNextWindowSize(ImVec2(set.xwSize, set.ywSize - set.yGuiSize), always);
+		Begin("HelpWnd", &open, flags);
+
+		Sep(5);
+		Text("Crystal Keys");
+		Sep(5);  x = 0;
+		string s = "Version: " + f2s(set.ver/100.f);
+		Text(s.c_str());
+		const char* a={__DATE__}, *m={__TIME__};
+		const char dt[] = {
+			//  build date, time  format yyyy-mmm-dd hh:mm
+			a[7],a[8],a[9],a[10],' ',a[0],a[1],a[2],' ',a[4],a[5],' ',' ',m[0],m[1],':',m[3],m[4],0};
+		s = "Date: ";  s += dt;
+		Text(s.c_str());
 
 		End();
 	}
