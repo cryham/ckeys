@@ -65,14 +65,17 @@ void App::Graph()
 		int x = k.x * sc + xl, y = k.y * sc + 20,
 			x2 = x + k.w * sc, y2 = y + k.h * sc;
 
-		//  key
-		int f = k.clr, r = 1;
+		//  key vars
+		int q = 0, r = 1;  //  frame offset and thickness
+
+		int f = k.clr;
 		if (set.bKLL && !k.inKll ||
 			set.bVK && !k.inVK)  f = KC_Missing;
 
 		int o = k.on? 0: 1;
 		bool l2 = set.bL2 && !k.strL2.isEmpty();
 		bool l3 = set.bL3 && !k.strL3.isEmpty();
+
 
 		//  draw  []
 		const rgb* c;
@@ -81,13 +84,15 @@ void App::Graph()
 		c = &kc[f][o][2];  Clr(c->r,c->g,c->b);
 		if (!k.on)
 		{
-			if (l2) {  c = &kl2;  Frame(x, y, x2, y2, r, c->r,c->g,c->b);  }
-			if (l3) {  c = &kl3;  Frame(x, y, x2, y2, r, c->r,c->g,c->b);  }
+			if (l2) {  c = &kl2;  Frame(x+q, y+q, x2-q, y2-q, r, c->r,c->g,c->b);  ++q;  }
+			if (l3) {  c = &kl3;  Frame(x+q, y+q, x2-q, y2-q, r, c->r,c->g,c->b);  }
 		}
+
 		//  mouse over
 		if (xm >= x && xm <= x2 && ym >= y && ym <= y2)
 		{	km = &k;
-			c = &kov;  Frame(x, y, x2, y2, 1, c->r,c->g,c->b);
+			q = -1;  r = 1;
+			c = &kov;  Frame(x+q, y+q, x2-q, y2-q, r, c->r,c->g,c->b);
 		}
 
 		//  caption  ----
@@ -123,34 +128,37 @@ void App::Graph()
 	//  key info
 	//--------------------------------
 	int x,y, x1,y1;
-	//bold = true;
-	text.setCharacterSize(yF-1);  yF += 4;
-	x = set.xGuiSize + 30;  x1 = x + 170;
-	y = set.ywSize - set.yGuiSize + 20;  y1 = y;
+	if (!help && !options && !graphics)
+	{
+		//bold = true;
+		text.setCharacterSize(yF-1);  int yL = yF + 4;
+		x = set.xGuiSize + 30;  x1 = x + 170;
+		y = set.ywSize - set.yGuiSize + 20;  y1 = y;
 
-	if (!km)
-	{	str = "Key info";// +i2s(xm)+ " "+i2s(ym);
-		Clr(150,180,220);  Txt(x, y);  y += 3*yF;
-	}else
-	{	//  1st col  ----
-		str = "Key:  " + km->Caption();  str.replace("\n","  ");
-		Clr(190,220,250);  Txt(x, y);  y += yF;
-		if (!km->strL2.isEmpty())
-		{	str = "L2:  " + km->strL2;
-			Clr(100,190,40);  Txt(x+9, y);  y += yF;  }
-		if (!km->strL3.isEmpty())
-		{	str = "L3:  " + km->strL3;
-			Clr(180,180,40);  Txt(x+9, y);  y += yF;  }
+		if (!km)
+		{	str = "Key info";// +i2s(xm)+ " "+i2s(ym);
+			Clr(150,180,220);  Txt(x, y);  y += 3*yL;
+		}else
+		{	//  1st col  ----
+			str = "Key:  " + km->Caption();  str.replace("\n","  ");
+			Clr(190,220,250);  Txt(x, y);  y += yL;
+			if (!km->strL2.isEmpty())
+			{	str = "L2:  " + km->strL2;
+				Clr(100,190,40);  Txt(x+9, y);  y += yL;  }
+			if (!km->strL3.isEmpty())
+			{	str = "L3:  " + km->strL3;
+				Clr(180,180,40);  Txt(x+9, y);  y += yL;  }
 
-		//  2nd col  ----
-		str = "Kll: " + km->sKll;
-		Clr(100,170,250);  Txt(x1+15, y1);  y1 += yF;
-		str = "Json: " + km->sJson;
-		Clr(165,165,240);  Txt(x1, y1);  y1 += yF;
-		str = "Scan: " + keys.kll2scan[km->sKll];
-		Clr(140,160,200);  Txt(x1-6, y1);  y1 += yF;
-		str = "  VK: ";  str += km->sVK;  //km->inVK ? "1" : "0";
-		Clr(140,140,180);  Txt(x1+4, y1);  y1 += yF;
+			//  2nd col  ----
+			str = "Kll: " + km->sKll;
+			Clr(100,170,250);  Txt(x1+15, y1);  y1 += yL;
+			str = "Json: " + km->sJson;
+			Clr(165,165,240);  Txt(x1, y1);  y1 += yL;
+			str = "Scan: " + keys.kll2scan[km->sKll];
+			Clr(140,160,200);  Txt(x1-6, y1);  y1 += yL;
+			str = "  VK: ";  str += km->sVK;  //km->inVK ? "1" : "0";
+			Clr(140,140,180);  Txt(x1+4, y1);  y1 += yL;
+		}
 	}
 
 
