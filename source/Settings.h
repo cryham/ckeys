@@ -18,6 +18,9 @@ public:
 
 	void GetWndDim(sf::Window* wnd);
 
+	bool FindData();
+	std::string data;  // data dir path
+
 
 	//  dimensions  -----
 	int   iFontH = 18;     // font height in list

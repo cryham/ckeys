@@ -1,5 +1,6 @@
 #include "Keyboard.h"
 #include "KeyNames.h"
+#include "Settings.h"
 using namespace std;
 
 
@@ -19,7 +20,6 @@ Keys::Keys()
 //-----------------------------------------------------------
 bool Keys::Init()
 {
-	pathData = "data/";
 	files.clear();
 	files.push_back("default");  //todo read dir
 	files.push_back("ck3");
@@ -36,8 +36,11 @@ void Keys::Destroy()
 }
 
 //  read layouts from file
-void Keys::LoadIndex(int id, bool log)
+void Keys::LoadIndex(const Settings* set)
 {
+	int id = set->iCombo;
+	bool log = set->logOut;
+
 	if (id >= files.size())
 		return;
 
@@ -46,16 +49,18 @@ void Keys::LoadIndex(int id, bool log)
 
 	//  load json
 	string fname = files[id];
-	LoadJson(pathData + fname + ".json", log);
+	string p = set->data;
+
+	LoadJson(p + fname + ".json", log);
 
 	//  load klls
 	//	default map:  scan code to kll name
-	LoadKll(pathData + "defaultMap" + fname + ".kll", 1, log);
+	LoadKll(p + "defaultMap" + fname + ".kll", 1, log);
 	//	layer map:  kll name to layer key/function
-	LoadKll(pathData + fname + "layer2.kll", 2, log);
-	LoadKll(pathData + fname + "layer3.kll", 3, log);
+	LoadKll(p + fname + "layer2.kll", 2, log);
+	LoadKll(p + fname + "layer3.kll", 3, log);
 
-//	LoadKll(pathData + fname + "overlay.kll", 0);  // Fn to layer num
+//	LoadKll(p + fname + "overlay.kll", 0);  // Fn to layer num
 //	U"Function2" : layerShift(2);  # hold
 //	U"Function3" : layerShift(3);  # hold
 }

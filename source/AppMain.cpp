@@ -12,6 +12,7 @@ void AppMain::Run()
 	//  laod Settings first
 	//------------------
 	App* app = new App();
+	app->set.FindData();
 	app->set.Load();
 	Settings& set = app->set;
 
@@ -34,7 +35,7 @@ void AppMain::Run()
 
 	//  icon
 	Image icon;
-	if (icon.loadFromFile("data/icon.png"))
+	if (icon.loadFromFile(set.data+"icon.png"))
 		window->setIcon(32, 32, icon.getPixelsPtr());
 
 
@@ -45,8 +46,8 @@ void AppMain::Run()
 	io.IniFilename = 0;  io.LogFilename = 0;  // nope
 	io.Fonts->ClearFonts();
 	//  font
-	ImFont* fnt = io.Fonts->AddFontFromFileTTF(
-					  "data/DejaVuLGCSans.ttf", app->set.iFontGui);
+	std::string p = set.data + "DejaVuLGCSans.ttf";
+	ImFont* fnt = io.Fonts->AddFontFromFileTTF(p.c_str(), app->set.iFontGui);
 	Texture* fntTex = new Texture;
 	createFontTexture(*fntTex);
 	setFontTexture(*fntTex);
@@ -62,11 +63,11 @@ void AppMain::Run()
 	//  Load data
 	//------------------------------------------------
 	Font font;
-	if (!font.loadFromFile("data/DejaVuLGCSans.ttf"))
+	if (!font.loadFromFile(set.data+"DejaVuLGCSans.ttf"))
 		{}  //Warning("Can't load .ttf","App Run");
 
 	Texture tex;
-	if (!tex.loadFromFile("data/white.png"))
+	if (!tex.loadFromFile(set.data+"white.png"))
 		{}  //Warning("Can't load white.png","App Run");
 
 	Sprite back(tex);

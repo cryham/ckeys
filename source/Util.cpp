@@ -2,12 +2,11 @@
 #include <sstream>
 #include <iomanip>
 #include <regex>
+#include <fstream>
 using namespace std;
 
 
-//  string utils
-//------------------------------------------------------------------
-
+//  format
 string i2s(const int v, const char width)
 {
 	ostringstream s;
@@ -24,7 +23,7 @@ string f2s(const float v, const char precision, const char width)
 	return s.str();
 }
 
-
+//  string
 vector<string> split(const string& s, const string& reg)
 {
 	regex re(reg);
@@ -42,6 +41,7 @@ string strlower(const string& s)
 }
 
 
+//  replace
 bool replK(std::string& str, const std::string& what, const std::string& to)
 {
 	size_t p = str.find(what);
@@ -58,4 +58,11 @@ bool replK(std::wstring& str, const std::wstring& what, const std::wstring& to)
 	if (rep)
 		str.replace(p, what.length(), to);
 	return rep;
+}
+
+//  file
+bool exists(const std::string& name)
+{
+	ifstream f(name.c_str());
+	return f.good();
 }

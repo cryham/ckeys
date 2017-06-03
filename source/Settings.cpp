@@ -55,6 +55,20 @@ void Settings::Default()
 	strcpy(pathSet, "ckeys.xml");
 }
 
+//  find data path
+bool Settings::FindData()
+{
+	string p, f = "icon.png";  // test file
+
+	p = "data/";
+	if (exists(p + f)) {  data = p;  return true;  }
+
+	p = "../data/";
+	if (exists(p + f)) {  data = p;  return true;  }
+
+	return false;
+}
+
 
 ///  Load
 //------------------------------------------------------------------------------------------------

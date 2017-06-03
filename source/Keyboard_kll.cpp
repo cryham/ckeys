@@ -159,7 +159,7 @@ bool Keys::LoadKll(string path, int layer, bool logOut)
 						string s = p.name;
 						replK(s, "Protocol", "");  replK(s, "Lock", "");  replK(s, "()", "");
 						replK(s, "MUTE", "Mute");  replK(s, "CALCULATOR", "Calc");
-						replK(s, "VOLUMEUP", "V+");  replK(s, "VOLUMEDOWN", "V-");
+						replK(s, "VOLUMEUP", "Vol+");  replK(s, "VOLUMEDOWN", "Vol-");
 						replK(s, "STOP", "[]");  replK(s, "PAUSEPLAY", "||");  replK(s, "PLAY", "|>");
 						replK(s, "SCANPREVIOUSTRACK", "|<");  replK(s, "SCANNEXTTRACK", ">|");
 						//  seq

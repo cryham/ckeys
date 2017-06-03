@@ -16,16 +16,14 @@ std::vector<std::string> split(
 //  string to lower
 std::string strlower(const std::string& s);
 
-//  found substring ss in s true
+//  found, substring ss in s
 static bool found(const std::string& s, const std::string& ss)
 {	return s.find(ss) != std::string::npos;  }
 
 
-
 //  replace in key name
 bool replK(std::string& str, const std::string& what, const std::string& to);
-
 bool replK(std::wstring& str, const std::wstring& what, const std::wstring& to);
 
-//  convert UTF-8 string to wstring
-std::wstring utf8_to_wstring(const std::string& str);
+//  file exists
+bool exists(const std::string& name);

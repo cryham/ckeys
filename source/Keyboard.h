@@ -37,9 +37,9 @@ struct Key
 	sf::String Caption()
 	{	return name.isEmpty() ? str : name;  }
 
-	uint16_t scan = 0;  // custom scan code
+	int16_t scan = -1;  // custom scan code, -1 none
 
-	std::string sJson;  // test name from json
+	std::string sJson;  // test original name in json
 
 	//  color set, based on name
 	KClr clr = KC_Normal;
@@ -64,7 +64,7 @@ class Keys
 public:
 	Keys();
 
-	void LoadIndex(int id, bool log);
+	void LoadIndex(const class Settings* set);
 
 	bool LoadJson(std::string path, bool logOut = true);
 	bool LoadKll(std::string path, int layer, bool logOut = true);
@@ -75,7 +75,6 @@ public:
 
 
 	bool Init();
-	std::string pathData = "data/";  // path to data dir
 	std::vector<std::string> files;  // .json layouts
 
 	//  filled in ctor, from csKeyNames
