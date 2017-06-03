@@ -8,16 +8,16 @@ class App : public AppDraw
 {
 public:
 	//  main
-	//--------------------------
 	App();
 	~App();
+
 	bool Init();
 	void Resize(int x, int y);
 
 	bool KeyDown(const sf::Event::KeyEvent& key);
 	void Mouse(int x, int y);
 
-	void Graph();  // draw graphics
+	void Graph();  // draw graphics, keys
 	void Gui();   // draw Gui
 
 
@@ -29,6 +29,7 @@ public:
 	Settings set;
 
 	Keys keys;
+
 
 	//  gui windows
 	bool options = false;

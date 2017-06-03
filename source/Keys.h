@@ -76,7 +76,9 @@ public:
 	//  replace key names, format
 	sf::String ReplaceJson(std::string& s, std::string& sVK, std::__cxx11::string& sk, bool& ext, bool& has2);
 	sf::String ReplaceKll(const std::string& name);
-	void ReplacePlayer(const std::string& s, sf::String& ws);
+	void ReplaceArrows(const std::string& s, sf::String& ws);
+	void ReplacePlayer(const std::string& s, sf::String& ws);  // util
+	void ReplacePressed(std::string& sk);
 
 
 	bool Init(Settings* pSet);

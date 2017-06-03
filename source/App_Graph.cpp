@@ -203,15 +203,7 @@ void App::Graph()
 		//  key name
 		std::string sk = keys.vk2str[kc.vk];
 
-		///****  replace N_ with Num
-		if (sk.length() > 2)
-		if (sk[0]=='N' && sk[1]=='_')
-			sk = "Num " + sk.substr(2);
-		if (sk[1]=='_')  // _ to space, for L_ R_
-			sk[1] = ' ';
-		if (sk == "Backspace")  // too long
-			sk = "Backspc";
-		///****
+		keys.ReplacePressed(sk);  //**
 
 		str = sk;
 		Clr(200,230,255);  bold = true;

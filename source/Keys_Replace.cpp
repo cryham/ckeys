@@ -41,19 +41,17 @@ sf::String Keys::ReplaceJson(string& s, string& sVK, string& sk, bool& ext, bool
 	replK(s, "\\\\", "\\");
 	sVK = s;  // copy for vk map
 
-	replK(s, "Lock", "");  // rem Lock
 	replK(s, "\\\"", "\"");
-	replK(s, "Space", " ");
-	replK(s, "Delete", "Del");
 	replK(s, "L_", "");  replK(s, "R_", "");  // left, right modifiers
 	if (replK(s, "N_", ""))  ext = true;  // numpad
 
+	//  shorter
+	replK(s, "Lock", "");
+	replK(s, "Space", " ");  replK(s, "Delete", "Del");
+	replK(s, "CLEAR", "5");
+
 	sf::String ws(s);  // arrow symbols
-	if (found(s, "Left"))   ws = L"←";  if (found(s, "Right"))  ws = L"→";
-	if (found(s, "Down"))   ws = L"↓";
-	if (!found(s, "PgUp") && found(s, "Up"))  ws = L"↑";
-	if (found(s, "CLEAR"))   ws = "5";
-	if (s=="Display")   ws = L"❏";  //▤❏◾
+	ReplaceArrows(s,ws);
 
 	//  vk to key  ------
 	if (has2)
@@ -77,6 +75,36 @@ sf::String Keys::ReplaceJson(string& s, string& sVK, string& sk, bool& ext, bool
 }
 
 
+//  apply player symbols
+void Keys::ReplacePlayer(const string& s, sf::String& ws)
+{
+	if (s=="|>")  ws = L"▶";  if (s=="||")  ws = L"▮▮";  if (s=="[]")  ws = L"◼";
+	if (s==">|" || s=="M Next")  ws = L"▶▮";  if (s==">>")  ws = L"▶▶";
+	if (s=="|<" || s=="M Prev")  ws = L"▮◀";  if (s=="<<")  ws = L"◀◀";
+}
+
+//  arrow symbols
+void Keys::ReplaceArrows(const string& s, sf::String& ws)
+{
+	if (found(s, "Left"))   ws = L"←";  if (found(s, "Right"))  ws = L"→";
+	if (found(s, "Down"))   ws = L"↓";
+	if (!found(s, "PgUp") && found(s, "Up"))  ws = L"↑";
+	if (s=="Display")   ws = L"❏";  //▤❏◾
+}
+
+void Keys::ReplacePressed(string& sk)
+{
+	//  replace N_ with Num
+	if (sk.length() > 2)
+	if (sk[0]=='N' && sk[1]=='_')
+		sk = "Num " + sk.substr(2);
+	if (sk[1]=='_')  // _ to space, for L_ R_
+		sk[1] = ' ';
+	if (sk == "Backspace")  // too long
+		sk = "Backspc";
+}
+
+
 //  set clr from name
 void Key::SetClr()
 {
@@ -84,12 +112,4 @@ void Key::SetClr()
 	if (sJson=="L3")  clr = KC_Layer3;  else
 	if (sJson=="Display")  clr = KC_Display;
 	else  clr = KC_Normal;
-}
-
-//  apply player symbols
-void Keys::ReplacePlayer(const string& s, sf::String& ws)
-{
-	if (s=="|>")  ws = L"▶";  if (s=="||")  ws = L"▮▮";  if (s=="[]")  ws = L"◼";
-	if (s==">|" || s=="M Next")  ws = L"▶▮";  if (s==">>")  ws = L"▶▶";
-	if (s=="|<" || s=="M Prev")  ws = L"▮◀";  if (s=="<<")  ws = L"◀◀";
 }
