@@ -3,6 +3,7 @@
 #include <iomanip>
 #include <regex>
 #include <fstream>
+#include <dirent.h>
 using namespace std;
 
 
@@ -42,27 +43,56 @@ string strlower(const string& s)
 
 
 //  replace
-bool replK(std::string& str, const std::string& what, const std::string& to)
+bool replK(string& str, const string& what, const string& to)
 {
 	size_t p = str.find(what);
-	bool rep = p != std::string::npos;
+	bool rep = p != string::npos;
 	if (rep)
 		str.replace(p, what.length(), to);
 	return rep;
 }
 
-bool replK(std::wstring& str, const std::wstring& what, const std::wstring& to)
+bool replK(wstring& str, const wstring& what, const wstring& to)
 {
 	size_t p = str.find(what);
-	bool rep = p != std::wstring::npos;
+	bool rep = p != wstring::npos;
 	if (rep)
 		str.replace(p, what.length(), to);
 	return rep;
 }
+
+
+//  ends with
+bool endsWith(string const &str, string const &ending)
+{
+	if (str.length() < ending.length())
+		return false;
+	return str.compare(str.length() - ending.length(), ending.length(), ending) == 0;
+}
+
 
 //  file
-bool exists(const std::string& name)
+bool exists(const string& name)
 {
 	ifstream f(name.c_str());
 	return f.good();
+}
+
+//  dir
+int getDir(string dir, vector<string> &files)
+{
+	DIR *dp = dp = opendir(dir.c_str());
+	struct dirent *dirp;
+	if(dp == NULL)
+	{
+		//cout << "Error(" << errno << ") opening " << dir << endl;
+		return errno;
+	}
+
+	while ((dirp = readdir(dp)) != NULL)
+	{
+		files.push_back(string(dirp->d_name));
+	}
+	closedir(dp);
+	return 0;
 }

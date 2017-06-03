@@ -58,8 +58,8 @@ void App::Gui()
 
 		//  combo
 		w = w3;  PushItemWidth(w);
-		e = Combo("Cmb", &set.iCombo, "default\0ck3\0ck4\0\0");  //todo from keys.files[]
-		if (e)  keys.LoadIndex(&set);
+		e = Combo("Cmb", &set.iCombo, &keys.vCmb[0]);
+		if (e)  keys.LoadIndex();
 		PopItemWidth();  x += w + 40;  x = 315;  SameLine(x);
 
 		//  buttons

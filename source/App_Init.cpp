@@ -13,9 +13,9 @@ bool App::Init()
 {
 	SetupGuiClr();
 
-	keys.Init();
+	keys.Init(&set);
 
-	keys.LoadIndex(&set);
+	keys.LoadIndex();
 
 	keys.Hook();
 

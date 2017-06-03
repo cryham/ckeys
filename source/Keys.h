@@ -60,13 +60,14 @@ struct Key
 	bool on = false;    // pressed
 };
 
-
+class Settings;
 class Keys
 {
 public:
 	Keys();
+	Settings* set = nullptr;
 
-	void LoadIndex(const class Settings* set);
+	void LoadIndex();
 
 	bool LoadJson(std::string path, bool logOut = true);
 	bool LoadKll(std::string path, int layer, bool logOut = true);
@@ -78,8 +79,9 @@ public:
 	void ReplacePlayer(const std::string& s, sf::String& ws);
 
 
-	bool Init();
+	bool Init(Settings* pSet);
 	std::vector<std::string> files;  // .json layouts
+	std::vector<char> vCmb;  // for combo, all files zero separated
 
 	//  filled in ctor, from csKeyNames
 	std::map<int, std::string> vk2str;

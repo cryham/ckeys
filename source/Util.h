@@ -25,5 +25,10 @@ static bool found(const std::string& s, const std::string& ss)
 bool replK(std::string& str, const std::string& what, const std::string& to);
 bool replK(std::wstring& str, const std::wstring& what, const std::wstring& to);
 
+bool endsWith(std::string const &str, std::string const &ending);
+
 //  file exists
 bool exists(const std::string& name);
+
+//  list directory contents
+int getDir(std::string dir, std::vector<std::string> &files);

@@ -1,6 +1,7 @@
 #include "Keys.h"
 #include "KeyNames.h"
 #include "Settings.h"
+#include "Util.h"
 using namespace std;
 
 
@@ -18,12 +19,30 @@ Keys::Keys()
 
 //  find data path
 //-----------------------------------------------------------
-bool Keys::Init()
+bool Keys::Init(Settings* pSet)
 {
+	set = pSet;
 	files.clear();
-	files.push_back("default");  //todo read dir
-	files.push_back("ck3");
-	files.push_back("ck4");
+	vCmb.clear();
+
+	//  get .json files from data dir, into combo
+	vector<string> vf = vector<string>();
+
+	getDir(set->data, vf);
+	for (auto s : vf)
+		if (endsWith(s, ".json"))
+		{
+			string ss = s;  replK(ss, ".json", "");
+			files.push_back(ss);
+		}
+
+	for (auto f : files)
+	{
+		for (auto c : f)
+			vCmb.push_back(c);
+		vCmb.push_back(0);
+	}
+	vCmb.push_back(0);
 	return true;
 }
 
@@ -36,7 +55,7 @@ void Keys::Destroy()
 }
 
 //  read layouts from file
-void Keys::LoadIndex(const Settings* set)
+void Keys::LoadIndex()
 {
 	int id = set->iCombo;
 	bool log = set->logOut;
