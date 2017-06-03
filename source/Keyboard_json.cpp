@@ -66,22 +66,39 @@ bool Keys::LoadJson(string path, bool logOut)
 		}else
 		if (t[i].type == JSMN_STRING)
 		{
-			//  key text
+			//  text
 			string s = str.substr(t[i].start, t[i].end - t[i].start);
-			if (s[0]>='a' && s[0]<='z')
+			bool len2 = s.length() > 2;
+
+			if (!len2 && s[0]>='a' && s[0]<='z')
 				prim = s;  // primitive
-			else
-			//  custom caption
-			if (s.length() > 2 && s[0]==' ' && s[1]==' ')
+
+			else  //  custom caption
+			if (len2 && s[0]=='n' && s[1]==':')
 			{
-				Key& k = keys.back();
+				Key& k = keys.back();  // prev key
 				s = s.substr(2);
+
 				sf::String ws = s;
 				ReplacePlayer(s,ws);
+
 				k.name = ws;
 				of << "Name: " << s << "\n";
 			}
-			else
+			else  //  scan code
+			if (len2 && s[0]=='s' && s[1]==':')
+			{
+				Key& k = keys.back();
+				s = s.substr(2);
+
+				uint16_t x;  // hex str to byte
+				stringstream ss;
+				ss << hex << s;  ss >> x;
+
+				k.scan = x;
+				of << "Scan: " << s << " s " << k.sVK << "\n";
+			}
+			else  //  key
 			{	string js = s;
 				///****  replace
 				bool ext = false;
