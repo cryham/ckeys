@@ -9,15 +9,7 @@
 using namespace std;
 
 
-//  player
-void Keys::ReplacePlayer(const std::string& s, sf::String& ws)
-{
-	if (s=="|>")  ws = L"▶";  if (s=="||")  ws = L"▮▮";  if (s=="[]")  ws = L"◼";
-	if (s==">|" || s=="M Next")  ws = L"▶▮";  if (s==">>")  ws = L"▶▶";
-	if (s=="|<" || s=="M Prev")  ws = L"▮◀";  if (s=="<<")  ws = L"◀◀";
-}
-
-//  load layout, read json layout from file
+//  read layout from json file
 //-----------------------------------------------------------------------------------------------------------
 bool Keys::LoadJson(string path, bool logOut)
 {
@@ -98,68 +90,37 @@ bool Keys::LoadJson(string path, bool logOut)
 				k.scan = x;
 				of << "Scan: " << s << " s " << k.sVK << "\n";
 			}
-			else  //  key
-			{	string js = s;
-				///****  replace
-				bool ext = false;
-				bool has2 = replK(s, "\\n", "\n");  // key has 2 descr: upper, lower
-				replK(s, "\\\\", "\\");
-				string ss = s;  // copy org nameg for vk map
-				replK(s, "Lock", "");  // rem Lock
-				replK(s, "\\\"", "\"");
-				replK(s, "Space", " ");
-				replK(s, "Delete", "Del");
-				replK(s, "L_", "");  replK(s, "R_", "");  // left, right modifiers
-				if (replK(s, "N_", ""))  ext = true;  // numpad
+			else  //  add key  --------
+			{
+				string js = s, sVK, sk;
+				bool ext, has2;
+				sf::String ws = ReplaceJson(s, sVK, sk, ext, has2);  //**
 
-				sf::String ws(s);  // arrow symbols
-				if (found(s, "Left"))   ws = L"←";  if (found(s, "Right"))  ws = L"→";
-				if (found(s, "Down"))   ws = L"↓";
-				if (!found(s, "PgUp") && found(s, "Up"))  ws = L"↑";
-				if (found(s, "CLEAR"))   ws = "5";
-				if (s=="Display")   ws = L"❏";  //▤❏◾
-				///****
-
-				//  font scale
-				float sf = w < 0.7f ? 0.6f/*ck4 mini*/ : 0.8f;
-				//float sf = k2 ? 0.8f :
-				//    k.length() > 1 ? 0.7f : 1.f;
-
-
-				//  setup key  ----
+				//  setup
 				Key k;
 				k.x = x0 + x;  k.y = y0 + y;
 				k.w = sx * w - se;  k.h = sy * h - se;
-				k.sc = sf * yfnt;
 				k.str = ws;  k.sJson = js;
-				//  clr
-				if (s=="L2")  k.clr = KC_Layer2;  else
-				if (s=="L3")  k.clr = KC_Layer3;  else
-				if (s=="Display")  k.clr = KC_Display;
-				else  k.clr = KC_Normal;
+				k.SetClr();
+
+				//  font scale
+				float sf = w < 0.7f ? 0.6f/*ck4 mini*/ : 0.8f;
+				k.sc = sf * yfnt;
 
 				x += w * sx;  // add x
-				w = 1.f;  h = 1.f;  // reset
+				w = 1.f;  h = 1.f;  // reset dim
 
 
 				//  vk to key  ------
-				if (has2)
-				{	size_t p = ss.find("\n");
-
-					if (!found(ss, "N_"))  // digits, symbols
-						ss = ss.substr(p+1);  // second part
-					else  // numpad
-						ss = ss.substr(0, p);  // first part
-				}
-				int vk = str2vk[ss];
+				int vk = str2vk[sVK];
 				bool ok = vk > 0;
-				char s[4];
-				sprintf(s, "%02X", vk);
-				k.sVK = !ok ? "" : s;
+				char hh[4];
+				sprintf(hh, "%02X", vk);
+				k.sVK = !ok ? "" : hh;
 				k.inVK = ok;
 
 				if (logOut)
-					of << s << "  " << ss << (vk==0 ? "\t\t!!!" : "") << endl;
+					of << hh << "  " << sVK << (vk==0 ? "\t\t!!!" : "") << endl;
 
 				if (ok)  // if found
 				{
@@ -167,17 +128,6 @@ bool Keys::LoadJson(string path, bool logOut)
 					if (ext)  kk += vk_EXTRA;  // numpad
 					vk2key[vk] = kk;
 				}
-
-
-				///****  str to key
-				string sk = ss;  // todo? cfg file..
-				replK(sk, "L_", "L");  replK(sk, "R_", "R");  // left, right mod
-				replK(sk, "N_", "P");  // numpad
-				replK(sk, "PgUp", "PageUp");  replK(sk, "PgDn", "PageDown");
-				replK(sk, "Win", "Gui");  replK(sk, "Menu", "App");
-				replK(sk, "PrtSc", "PrintScreen");
-				replK(sk, "`", "BackTick");  //replK(sk, " Lock", "Lock");
-				///****
 
 				str2key[sk] = keys.size()+1;
 				k.sKll = sk;  // for info

@@ -116,13 +116,10 @@ bool Keys::LoadKll(string path, int layer, bool logOut)
 					else
 					{
 						if (p.scan == 1)
-						{
 							p.sscan = s.substr(p.scan0, pos - p.scan0);
-							//of << "--scan: " << sscan << "\n";
-						}else{
+						else
 							p.sname = p.name;
-							//of << "--name: " << p.name << "\n";
-						}
+
 						p.mid0 = pos+1;
 						//  trim front spaces
 						while (s[p.mid0]==' ' && p.mid0 < len)  ++p.mid0;
@@ -155,30 +152,7 @@ bool Keys::LoadKll(string path, int layer, bool logOut)
 						Key& k = keys[id];
 						k.inKll = true;
 
-						///****  shorten kll names
-						string s = p.name;
-						replK(s, "Protocol", "");  replK(s, "Lock", "");  replK(s, "()", "");
-						replK(s, "MUTE", "Mute");  replK(s, "CALCULATOR", "Calc");
-						replK(s, "VOLUMEUP", "Vol+");  replK(s, "VOLUMEDOWN", "Vol-");
-						replK(s, "STOP", "[]");  replK(s, "PAUSEPLAY", "||");  replK(s, "PLAY", "|>");
-						replK(s, "SCANPREVIOUSTRACK", "|<");  replK(s, "SCANNEXTTRACK", ">|");
-						//  seq
-						bool b = replK(s, "s(", "s");  if (b)  s = s.substr(0,s.length()-1);
-						if (s.length() == 3 && s[0]=='\'' && s[2]=='\'')
-							s = s[1];
-						//  mouse
-						bool m = replK(s, "mouseOut(", "M");
-						sf::String ws(s);
-						if (m)
-						{
-							char x=0, y=0, b=0;
-							sscanf(s.c_str(), "M%d,%d,%d", &b,&x,&y);
-							if (x < 0)  ws = L"M←";  else  if (x > 0)  ws = L"M→";  else
-							if (y < 0)  ws = L"M↑";  else  if (y > 0)  ws = L"M↓";  else
-							if (b > 0)  ws = "M" + i2s(b);
-						}
-						ReplacePlayer(s,ws);
-						///****
+						sf::String ws = ReplaceKll(p.name);  //**
 
 						if (layer==2)  k.strL2 = ws;
 						else

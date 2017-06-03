@@ -31,6 +31,7 @@ struct Key
 	float sc = 1.f;   // scale
 
 	sf::String str;     // key name and caption, shown on Gui
+
 	//  optional json
 	sf::String name;    // custom caption on Gui, overrides str
 
@@ -43,6 +44,7 @@ struct Key
 
 	//  color set, based on name
 	KClr clr = KC_Normal;
+	void SetClr();
 
 	//  from kll  ----
 	sf::String sKll;     // test name for kll
@@ -70,8 +72,10 @@ public:
 	bool LoadKll(std::string path, int layer, bool logOut = true);
 	void Destroy();
 
-	//  replace
-	void ReplacePlayer(const std::__cxx11::string& s, sf::String& ws);
+	//  replace key names, format
+	sf::String ReplaceJson(std::string& s, std::string& sVK, std::__cxx11::string& sk, bool& ext, bool& has2);
+	sf::String ReplaceKll(const std::string& name);
+	void ReplacePlayer(const std::string& s, sf::String& ws);
 
 
 	bool Init();
