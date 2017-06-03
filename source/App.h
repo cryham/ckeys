@@ -33,6 +33,7 @@ public:
 	//  gui windows
 	bool options = false;
 	bool graphics = false;
+	bool help = false;
 
 	//  auto max size
 	int xMax = 0, yMax = 0;

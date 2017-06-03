@@ -59,5 +59,5 @@ public:
 	//  GUI dimensions  const  -----
 	const int xGuiSize = 600, yGuiSize = 114,
 		xRWndSize = 120,
-		xGui1 = 185, xGui2 = 110, xGui3 = 130;
+		xGui1 = 160, xGui2 = 110, xGui3 = 130;
 };
