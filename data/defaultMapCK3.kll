@@ -47,7 +47,7 @@ S0x1C: U"RCtrl";  #*  (End)  (Right)
 
 S0x0E: U"Function3";  #* L3 [Player,mouse,etc]  (left|\)
 S0x1E: U"Function3";  #* L3  (Left)
-#S0x0C: U"Function4";  #* L4  (Up)
+S0x0C: U"Function4";  #* L4  (Up)
 S0x1B: U"Function2";  #* L2 [Sequences]  (Down)
 
 # --------  numpad  --------
