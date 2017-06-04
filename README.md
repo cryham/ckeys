@@ -18,11 +18,13 @@ Windows Keyboard Hook is used to get key states (Virtual Key codes).
 were just demo programs for using [SFML](https://github.com/SFML/SFML), [ImGui](https://github.com/ocornut/imgui) and [TinyXML-2](https://github.com/leethomason/tinyxml2).  
 And can serve as **tutorials or starting projects** for similar applications, for both GNU/Linux and Windows.  
 
+
 ## Layouts
 
 Program reads custom keyboard layouts, from **JSON** files (using jsmn parser library).  
 Which can be created, edited and saved from this web based editor: www.keyboard-layout-editor.com  
 The default.json layout is the ANSI 104 preset.  
+
 All `*.json` files located in `data` directory will be available in Layout combobox.  
 Program supports only basic rectangular layouts, no rotation or styling.  
 Additionally, I added own commands to json, which replace key names `"n:Name"` and assign scan code `"s:12"`.  
@@ -31,6 +33,10 @@ Additionally, I added own commands to json, which replace key names `"n:Name"` a
 
 Since version 1.0 it also reads **KLL** files ([specification](https://input.club/kll/), [repo](https://github.com/kiibohd/kll)).  
 Basic parsing is done to get layer key bindings (mapping).  
+
+For e.g. `ck3` keyboard the base map is `defaultMapCK3.kll`.  
+All `ck3layer*.kll` files in `data` dir are read for layers. Maximum number is 8.  
+
 
 ## Compiling
 
@@ -46,6 +52,11 @@ After this the program should build.
 
 In sources there already are: [TinyXML2](https://github.com/leethomason/tinyxml2), [jsmn](https://github.com/zserge/jsmn), ImGui with ImGui-SFML and [Native File Dialog](https://github.com/mlabbe/nativefiledialog).  
 
-## Screenshot
+
+## Screenshot with default layout
 
 ![](https://raw.githubusercontent.com/cryham/ckeys/master/screenshot.png)
+
+## Screenshot with layers
+
+![](https://raw.githubusercontent.com/cryham/ckeys/master/screenshot2.png)
