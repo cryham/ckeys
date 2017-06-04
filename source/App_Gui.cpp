@@ -34,20 +34,22 @@ void App::Gui()
 		//---------------------------------------------
 		Sep(1);
 		w = w2;  Text("Layers");  x += w;  SameLine(x);
-		w = 60;
-		const int Lnum = 3;
-		bool* Lchk[Lnum] = {&set.bL1, &set.bL2, &set.bL3};
-		const char* Lname[Lnum] = {"L1", "L2", "L3"};
-		const ImVec4 Lclr[Lnum] = {
-			ImVec4(0.3f, 0.6f, 1.0f, 1.f),
-			ImVec4(0.4f, 0.85f, 0.2f, 1.f),
-			ImVec4(0.8f, 0.8f, 0.2f, 1.f)};
+		w = 65;  //58
 
-		for (int l=0; l < Lnum; ++l)
+		for (int l=0; l <= keys.Lnum; ++l)
+		#if 1
+		if (l != 1)  // skip L1 (is for Display)
+		#endif
 		{
-			PushStyleColor(ImGuiCol_Text, Lclr[l]);
-			Checkbox(Lname[l], Lchk[l]);  x += w;
-			if (l < Lnum-1)  SameLine(x);
+			const rgb& c = set.clrLay[l][2];
+			const float f = 1.f/255.f;
+			ImVec4 cl(c.r*f, c.g*f, c.b*f, 1.f);
+			PushStyleColor(ImGuiCol_Text, cl);
+
+			string s = "L" + i2s(l);
+			Checkbox(s.c_str(), &set.bL[l]);  x += w;
+
+			if (l < keys.Lnum && l != 5)  SameLine(x);  else x = 20;
 			PopStyleColor();
 		}
 
@@ -70,6 +72,7 @@ void App::Gui()
 			set.xwSize = min(2560, max(640, xMax + 30));  //par
 			set.ywSize = yMax + set.yGuiSize + 4;
 			sf::Vector2u si(set.xwSize, set.ywSize);
+
 			pWindow->setSize(si);
 			Resize(set.xwSize, set.ywSize);
 		}
@@ -81,10 +84,11 @@ void App::Gui()
 		x = 0;  Sep(1);  //  scale slider
 		w = w2;  Text(("Scale  "+f2s(set.fScale,2)).c_str());  x += w;  SameLine(x);
 		w = set.xwSize > 720 ? 320 : 150;  //par
+
 		PushItemWidth(w);  PushAllowKeyboardFocus(false);
 		e = SliderFloat("", &set.fScale, 0.2f, 2.f, "");  PopAllowKeyboardFocus();
 		if (e)  set.fScale = min(3.f, max(0.1f, set.fScale));
-		PopItemWidth();  x += w + 20;  SameLine(x);
+		PopItemWidth();  x += w + 20;
 
 		End();
 	}
@@ -160,7 +164,10 @@ void App::Gui()
 		w = xt;  Text("Test: ");  x += w;  SameLine(x);
 		w = w2;  e = Checkbox("VK", &set.bVK);  x += w;  SameLine(x);
 		w = w2;  e = Checkbox("KLL", &set.bKLL);  x += w;  SameLine(x);
-		w = w2;  e = Checkbox("Fps", &set.bFps);  x += w;
+		w = w2;  e = Checkbox("Scan", &set.bScan);  x += w;  SameLine(x);
+
+		w = w2;  e = Checkbox("Fps", &set.bFps);  x += w;  SameLine(x);
+		w = w2;  e = Checkbox("Info", &set.bInfo);  x += w;
 
 		Sep(1);  x = 0;
 		w = xt;  Text("Program: ");  x += w;  SameLine(x);
@@ -183,6 +190,7 @@ void App::Gui()
 		Sep(5);  x = 0;
 		string s = "Version: " + f2s(set.ver/100.f);
 		Text(s.c_str());
+
 		const char* a={__DATE__}, *m={__TIME__};
 		const char dt[] = {
 			//  build date, time  format yyyy-mmm-dd hh:mm

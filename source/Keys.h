@@ -5,9 +5,10 @@
 #include <list>
 #include <SFML/System/String.hpp>
 #include <SFML/System/Mutex.hpp>
+#include "Settings.h"  // Lmax
 
 
-//  keys for pressed list
+//  key for pressed list
 struct KeyCode
 {
 	int vk=0, sc=0, ext=0;
@@ -19,11 +20,8 @@ struct KeyCode
 	{	return vk < o.vk || sc < o.sc || ext < o.ext;  }
 };
 
-enum KClr
-{	KC_Normal=0, KC_Missing,  KC_Layer2, KC_Layer3, KC_Display, KC_ALL  };
 
-
-//  keys for Gui layout
+//  single key, for Gui layout
 struct Key
 {
 	//  from json  ----
@@ -44,13 +42,15 @@ struct Key
 
 	//  color set, based on name
 	KClr clr = KC_Normal;
+	int layer = 0;
 	void SetClr();
 
 	//  from kll  ----
 	sf::String sKll;     // test name for kll
 	bool inKll = false;  // test kll
 
-	sf::String strL2, strL3;   // caption on layer 2 and 3
+	//  caption on other layers 2,3,..
+	sf::String strL[Settings::Lmax];
 
 	//  vk test  ----
 	bool inVK = false;
@@ -60,7 +60,8 @@ struct Key
 	bool on = false;    // pressed
 };
 
-class Settings;
+
+//  Keyboard layout
 class Keys
 {
 public:
@@ -74,7 +75,7 @@ public:
 	void Destroy();
 
 	//  replace key names, format
-	sf::String ReplaceJson(std::string& s, std::string& sVK, std::__cxx11::string& sk, bool& ext, bool& has2);
+	sf::String ReplaceJson(std::string& s, std::string& sVK, std::string& sk, bool& ext, bool& has2);
 	sf::String ReplaceKll(const std::string& name);
 	void ReplaceArrows(const std::string& s, sf::String& ws);
 	void ReplacePlayer(const std::string& s, sf::String& ws);  // util
@@ -91,6 +92,7 @@ public:
 
 
 	//  keyboard layout  ----
+	int Lnum = 0;  // layers count, last number
 	std::vector<Key> keys;
 
 	//  vk code to key id,  for hook

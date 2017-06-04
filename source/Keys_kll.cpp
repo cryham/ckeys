@@ -47,7 +47,7 @@ struct SParser
 
 
 //  load layer, from kll file
-//-----------------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------
 bool Keys::LoadKll(string path, int layer, bool logOut)
 {
 	//  open
@@ -58,7 +58,11 @@ bool Keys::LoadKll(string path, int layer, bool logOut)
 
 	ofstream of;
 	if (logOut)
+	{
 		of.open(path+".log", ofstream::out);
+		if (!of.good())
+			logOut = false;
+	}
 
 	//  read whole file as string s
 	string s;
@@ -77,7 +81,7 @@ bool Keys::LoadKll(string path, int layer, bool logOut)
 	}
 
 	//  parse kll
-	//----------------------------------
+	//------------------------------------------------
 	int pos=0, len = s.length();
 	SParser p;
 
@@ -132,7 +136,7 @@ bool Keys::LoadKll(string path, int layer, bool logOut)
 					if (p.scan)
 					{
 						id = str2key[p.name]-1;
-						if (layer == 1)
+						if (layer == 0)
 							kll2scan[p.name] = p.sscan;
 
 						if (logOut)
@@ -154,9 +158,8 @@ bool Keys::LoadKll(string path, int layer, bool logOut)
 
 						sf::String ws = ReplaceKll(p.name);  //**
 
-						if (layer==2)  k.strL2 = ws;
-						else
-						if (layer==3)  k.strL3 = ws;
+						if (layer > 0)
+							k.strL[layer] = ws;
 					}
 					p.Reset();
 				}

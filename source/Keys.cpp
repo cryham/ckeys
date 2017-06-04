@@ -26,20 +26,22 @@ bool Keys::Init(Settings* pSet)
 	vCmb.clear();
 
 	//  get .json files from data dir, into combo
-	vector<string> vf = vector<string>();
-
+	vector<string> vf;
 	getDir(set->data, vf);
+
 	for (auto s : vf)
+	{
 		if (endsWith(s, ".json"))
 		{
 			string ss = s;  replK(ss, ".json", "");
 			files.push_back(ss);
 		}
-
+	}
 	for (auto f : files)
 	{
 		for (auto c : f)
 			vCmb.push_back(c);
+
 		vCmb.push_back(0);
 	}
 	vCmb.push_back(0);
@@ -52,6 +54,7 @@ void Keys::Destroy()
 	vk2key.clear();
 	str2key.clear();
 	kll2scan.clear();
+	Lnum = 0;
 }
 
 //  read layouts from file
@@ -74,12 +77,27 @@ void Keys::LoadIndex()
 
 	//  load klls
 	//	default map:  scan code to kll name
-	LoadKll(p + "defaultMap" + fname + ".kll", 1, log);
-	//	layer map:  kll name to layer key/function
-	LoadKll(p + fname + "layer2.kll", 2, log);
-	LoadKll(p + fname + "layer3.kll", 3, log);
+	LoadKll(p + "defaultMap" + fname + ".kll", 0, log);
 
-//	LoadKll(p + fname + "overlay.kll", 0);  // Fn to layer num
-//	U"Function2" : layerShift(2);  # hold
-//	U"Function3" : layerShift(3);  # hold
+	//	layer maps
+	//  kll name to layer key/function
+	vector<string> vf;
+	getDir(p, vf);  // get any 1..9
+
+	for (string s : vf)
+	{
+		if (endsWith(s, ".kll") && found(s, "layer") && found(s, fname))
+		{
+			//  get layer number, digit before .
+			size_t pos = s.find('.');
+			char l = s.substr(pos-1,1)[0] - '0';
+
+			if (l >= 1 && l < Settings::Lmax)
+			if (LoadKll(p + s, l, log))
+				if (l > Lnum)  Lnum = l;
+		}
+	}
+	//LoadKll(p + fname + "overlay.kll", 0);  // Fn to layer num
+	//U"Function2" : layerShift(2);  # hold
+	//U"Function3" : layerShift(3);  # hold
 }

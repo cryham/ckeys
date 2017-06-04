@@ -2,32 +2,6 @@
 #include "Util.h"
 
 
-struct rgb
-{
-	uint8_t r,g,b;
-//	float h,s,v;
-//	ImGui::ColorConvertHSVtoRGB()
-};
-
-//  [KClr], [pressed/normal], [rect,frame,text]
-const static rgb kc[KC_ALL][2][3] = {{
-	{{ 77,115,153},{204,235,255},{227,242,255}},  // normal cyan
-	{{ 26, 51, 77},{ 51,102,153},{179,217,254}}},{
-	{{125, 75, 63},{185,165,155},{215,162,155}},  // missing orange
-	{{ 77, 51, 27},{142,112, 83},{234,167,154}}},{
-
-	{{ 22, 65, 22},{ 81,153, 73},{162,255,154}},  // L2 green
-	{{ 22, 65, 22},{ 81,153, 73},{162,255,154}}},{
-	{{ 55, 55, 11},{133,133, 63},{240,240,125}},  // L3 yellow
-	{{ 55, 55, 11},{133,133, 63},{240,240,125}}},{
-	{{ 65, 42, 22},{132,102, 83},{254,187,104}},  // display orange
-	{{ 65, 42, 22},{132,102, 83},{254,187,104}}}};
-//	{{105,115,163},{225,235,255},{222,242,255}},  // viol blue
-//	{{ 45, 41,107},{112,102,193},{227,217,254}}},{
-const static rgb  // layer frame
-	kl2 = {60,150,20}, kl3 = {130,130,20}, kov = {220,230,240};
-
-
 //  Graphics draw
 ///-----------------------------------------------------------------------------
 void App::Graph()
@@ -46,21 +20,36 @@ void App::Graph()
 		Txt(set.xwSize - 70, 2);
 	}
 
+	//  Keys info
+	if (set.bInfo)
+	{
+		text.setCharacterSize(yF-3);
+		Clr(115,125,155);
+		int x = set.xwSize - 90;
+
+		str = "Layers: " + i2s(keys.Lnum);
+		Txt(x, set.ywSize - yF);
+		str = "Keys: " + i2s(keys.keys.size());
+		Txt(x, set.ywSize - yF*2);
+	}
+
 
 	//  draw keyboard
 	//----------------------------------------------------------------
 	const float sc = set.fScale;
+	const int yL = set.iFontH * sc;
 	const int xl = !set.bList ? 20 :  // left margin x
 					set.bListSimple ? 110 : 230;
 	xMax = 0;  yMax = 0;
+	const rgb* c;
 
 	//  key under mouse, for info
-	Key* km = 0;
+	Key* kum = nullptr;
 	if (set.bBold)
 		bold = true;
 
 	if (set.bLayout)
-	for (auto& k : keys.keys)
+	for (Key& k : keys.keys)
 	{
 		int x = k.x * sc + xl, y = k.y * sc + 20,
 			x2 = x + k.w * sc, y2 = y + k.h * sc;
@@ -68,56 +57,59 @@ void App::Graph()
 		//  key vars
 		int q = 0, r = 1;  //  frame offset and thickness
 
-		int f = k.clr;
+		KClr kc = k.on ? KC_Pressed : k.clr;
 		if (set.bKLL && !k.inKll ||
-			set.bVK && !k.inVK)  f = KC_Missing;
+			set.bVK && !k.inVK ||
+			set.bScan && k.scan == -1)
+			kc = KC_Missing;
 
-		int o = k.on? 0: 1;
-		bool l2 = set.bL2 && !k.strL2.isEmpty();
-		bool l3 = set.bL3 && !k.strL3.isEmpty();
-
+		#define isLay(l)  (set.bL[l] && !k.strL[l].isEmpty())
+		int l = k.layer;
 
 		//  draw  []
-		const rgb* c;
-		c = &kc[f][o][0];  Rect( x, y, x2, y2,    c->r,c->g,c->b);
-		c = &kc[f][o][1];  Frame(x, y, x2, y2, r, c->r,c->g,c->b);
-		c = &kc[f][o][2];  Clr(c->r,c->g,c->b);
+		c = set.getC(kc,l,0);  Rect( x,y, x2,y2,    c->r,c->g,c->b);
+		c = set.getC(kc,l,1);  Frame(x,y, x2,y2, r, c->r,c->g,c->b);
+		c = set.getC(kc,l,2);  Clr(c->r,c->g,c->b);
+		bool Lany = false;
 		if (!k.on)
 		{
-			if (l2) {  c = &kl2;  Frame(x+q, y+q, x2-q, y2-q, r, c->r,c->g,c->b);  ++q;  }
-			if (l3) {  c = &kl3;  Frame(x+q, y+q, x2-q, y2-q, r, c->r,c->g,c->b);  }
+			for (int i=0; i <= keys.Lnum; ++i)
+			if (isLay(i))
+			{
+				c = set.getC(KC_Lnum, i, 1);  Frame(x+q, y+q, x2-q, y2-q, r, c->r,c->g,c->b);
+				++q;  Lany = true;
+			}
 		}
 
 		//  mouse over
 		if (xm >= x && xm <= x2 && ym >= y && ym <= y2)
-		{	km = &k;
+		{	kum = &k;
 			q = -1;  r = 1;
-			c = &kov;  Frame(x+q, y+q, x2-q, y2-q, r, c->r,c->g,c->b);
+			c = &set.clrOver;  Frame(x+q, y+q, x2-q, y2-q, r, c->r,c->g,c->b);
 		}
 
 		//  caption  ----
 		str = set.bKLL ? k.sKll : k.Caption();
 		bool ln2 = str.find("\n") != sf::String::InvalidPos;
 
-		bool lon = !set.bL1 && (l2 || l3);
+		bool Loff = set.bL[0] || !Lany;  // force or empty
 		text.setCharacterSize(k.sc * sc);
-		if (!lon)  Txt(x + 4, y + 4);
+		if (Loff)  Txt(x + 4, y + 4);
 
 		//  layer label(s)  ----
-		int xl = x + 4 + (!lon && ln2 ? 18.f*sc : 0);
-		int yl = y + 4 + (!lon ? yF : 0);
+		int xl = x + 4 + (Loff && ln2 ? 18.f*sc : 0);
+		int yl = y + 4 + (Loff ? yL : 0);
 
-		if (l2)
-		{	str = k.strL2;
-			Clr(120,240,60);
-			Txt(xl, yl);
+		if (!k.on)
+		for (int i=0; i <= keys.Lnum; ++i)
+		if (isLay(i))
+		{
+			str = k.strL[i];
+			c = set.getC(KC_Lnum, i, 2);
+			Clr(c->r,c->g,c->b);
+			Txt(xl, yl);  yl += yL;
 		}
-		if (l3)
-		{	str = k.strL3;
-			Clr(220,220,60);
-			if (l2)  yl += yF;
-			Txt(xl, yl);
-		}
+		#undef isLay
 
 		//  get max size
 		if (x2 > xMax)  xMax = x2;
@@ -135,28 +127,32 @@ void App::Graph()
 		x = set.xGuiSize + 30;  x1 = x + 170;
 		y = set.ywSize - set.yGuiSize + 20;  y1 = y;
 
-		if (!km)
+		if (!kum)
 		{	str = "Key info";// +i2s(xm)+ " "+i2s(ym);
 			Clr(150,180,220);  Txt(x, y);  y += 3*yL;
 		}else
 		{	//  1st col  ----
-			str = "Key:  " + km->Caption();  str.replace("\n","  ");
+			str = "Key:  " + kum->Caption();  str.replace("\n","  ");
 			Clr(190,220,250);  Txt(x, y);  y += yL;
-			if (!km->strL2.isEmpty())
-			{	str = "L2:  " + km->strL2;
-				Clr(100,190,40);  Txt(x+9, y);  y += yL;  }
-			if (!km->strL3.isEmpty())
-			{	str = "L3:  " + km->strL3;
-				Clr(180,180,40);  Txt(x+9, y);  y += yL;  }
+
+			for (int i=0; i <= keys.Lnum; ++i)
+			if (!kum->strL[i].isEmpty())
+			{
+				str = "L" + i2s(i) + ":  " + kum->strL[i];
+				c = set.getC(KC_Lnum, i, 2);
+				Clr(c->r,c->g,c->b);
+				Txt(x+9, y);  y += yL;
+				if (y+yL > set.ywSize) {  y = y1;  x += 350;  }  //out
+			}
 
 			//  2nd col  ----
-			str = "Kll: " + km->sKll;
+			str = "Kll: " + kum->sKll;
 			Clr(100,170,250);  Txt(x1+15, y1);  y1 += yL;
-			str = "Json: " + km->sJson;
+			str = "Json: " + kum->sJson;
 			Clr(165,165,240);  Txt(x1, y1);  y1 += yL;
-			str = "Scan: " + keys.kll2scan[km->sKll];
+			str = "Scan: " + keys.kll2scan[kum->sKll];
 			Clr(140,160,200);  Txt(x1-6, y1);  y1 += yL;
-			str = "  VK: ";  str += km->sVK;  //km->inVK ? "1" : "0";
+			str = "  VK: ";  str += kum->sVK;  //km->inVK ? "1" : "0";
 			Clr(140,140,180);  Txt(x1+4, y1);  y1 += yL;
 		}
 	}

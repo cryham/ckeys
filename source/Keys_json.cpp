@@ -21,7 +21,11 @@ bool Keys::LoadJson(string path, bool logOut)
 
 	ofstream of;
 	if (logOut)
+	{
 		of.open(path + ".log");
+		if (!of.good())
+			logOut = false;
+	}
 
 	stringstream ss;  ss << f.rdbuf();
 	string str = ss.str();
@@ -89,6 +93,8 @@ bool Keys::LoadJson(string path, bool logOut)
 
 				k.scan = x;
 				of << "Scan: " << s << " s " << k.sVK << "\n";
+
+				kll2scan[k.sKll] = s;  //`
 			}
 			else  //  add key  --------
 			{

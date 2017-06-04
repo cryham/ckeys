@@ -26,7 +26,7 @@ void Settings::Default()
 {
 	iFontH = 18;
 	iFontGui = 17;
-	bBold = false;
+	bBold = true;
 
 	iCombo = 0;
 
@@ -37,6 +37,7 @@ void Settings::Default()
 	fScale = 1.f;
 
 	bFps = false;
+	bInfo = true;
 	escQuit = false;
 	logOut = false;
 
@@ -48,9 +49,8 @@ void Settings::Default()
 	bVK = false;
 	bKLL = false;
 
-	bL1 = true;
-	bL2 = false;
-	bL2 = false;
+	for (int i = 0; i < Lmax; ++i)
+		bL[i] = false;
 
 	strcpy(pathSet, "ckeys.xml");
 }
@@ -103,12 +103,20 @@ bool Settings::Load()
 	{	a = e->Attribute("list");    if (a)  bList = atoi(a) > 0;
 		a = e->Attribute("simple");  if (a)  bListSimple = atoi(a) > 0;
 		a = e->Attribute("layout");  if (a)  bLayout = atoi(a) > 0;
+
 		a = e->Attribute("fps");     if (a)  bFps = atoi(a) > 0;
+		a = e->Attribute("info");    if (a)  bInfo = atoi(a) > 0;
+
 		a = e->Attribute("vk");      if (a)  bVK  = atoi(a) > 0;
 		a = e->Attribute("kll");     if (a)  bKLL = atoi(a) > 0;
-		a = e->Attribute("L1");      if (a)  bL1 = atoi(a) > 0;
-		a = e->Attribute("L2");      if (a)  bL2 = atoi(a) > 0;
-		a = e->Attribute("L3");      if (a)  bL3 = atoi(a) > 0;
+		a = e->Attribute("scan");    if (a)  bScan = atoi(a) > 0;
+	}
+	e = root->FirstChildElement("layer");
+	if (e)
+	for (int l=0; l < Lmax; ++l)
+	{
+		string s = "L" + i2s(l);
+		a = e->Attribute(s.c_str());  if (a)  bL[l] = atoi(a) > 0;
 	}
 	e = root->FirstChildElement("window");
 	if (e)
@@ -152,12 +160,21 @@ bool Settings::Save()
 		e->SetAttribute("list", bList ? 1 : 0);
 		e->SetAttribute("simple", bListSimple ? 1 : 0);
 		e->SetAttribute("layout", bLayout ? 1 : 0);
+
 		e->SetAttribute("fps", bFps ? 1 : 0);
+		e->SetAttribute("info", bInfo ? 1 : 0);
+
 		e->SetAttribute("vk",  bVK  ? 1 : 0);
 		e->SetAttribute("kll", bKLL ? 1 : 0);
-		e->SetAttribute("L1", bL1 ? 1 : 0);
-		e->SetAttribute("L2", bL2 ? 1 : 0);
-		e->SetAttribute("L3", bL3 ? 1 : 0);
+		e->SetAttribute("scan", bScan ? 1 : 0);
+	root->InsertEndChild(e);
+
+	e = xml.NewElement("layer");
+	for (int l=0; l < Lmax; ++l)
+	{
+		string s = "L" + i2s(l);
+		e->SetAttribute(s.c_str(), bL[l] ? 1 : 0);
+	}
 	root->InsertEndChild(e);
 
 	e = xml.NewElement("window");

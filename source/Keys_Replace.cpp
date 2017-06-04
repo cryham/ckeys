@@ -29,7 +29,7 @@ sf::String Keys::ReplaceKll(const string& name)
 		if (y < 0)  ws = L"M↑";  else  if (y > 0)  ws = L"M↓";  else
 		if (b > 0)  ws = "M" + i2s(b);
 	}
-	ReplacePlayer(s,ws);
+	ReplacePlayer(s,ws);  //**
 	return ws;
 }
 
@@ -50,8 +50,8 @@ sf::String Keys::ReplaceJson(string& s, string& sVK, string& sk, bool& ext, bool
 	replK(s, "Space", " ");  replK(s, "Delete", "Del");
 	replK(s, "CLEAR", "5");
 
-	sf::String ws(s);  // arrow symbols
-	ReplaceArrows(s,ws);
+	sf::String ws(s);
+	ReplaceArrows(s,ws);  //**
 
 	//  vk to key  ------
 	if (has2)
@@ -94,10 +94,10 @@ void Keys::ReplaceArrows(const string& s, sf::String& ws)
 
 void Keys::ReplacePressed(string& sk)
 {
-	//  replace N_ with Num
-	if (sk.length() > 2)
+	if (sk.length() > 2)  // N_ to Num
 	if (sk[0]=='N' && sk[1]=='_')
 		sk = "Num " + sk.substr(2);
+
 	if (sk[1]=='_')  // _ to space, for L_ R_
 		sk[1] = ' ';
 	if (sk == "Backspace")  // too long
@@ -108,8 +108,15 @@ void Keys::ReplacePressed(string& sk)
 //  set clr from name
 void Key::SetClr()
 {
-	if (sJson=="L2")  clr = KC_Layer2;  else
-	if (sJson=="L3")  clr = KC_Layer3;  else
-	if (sJson=="Display")  clr = KC_Display;
-	else  clr = KC_Normal;
+	clr = KC_Normal;
+	layer = 0;
+
+	if (sJson=="Display")
+		clr = KC_Display;
+	else
+	if (sJson.length() == 2 && sJson[0] == 'L')
+	{
+		clr = KC_Layer;
+		layer = sJson[1] - '0';
+	}
 }
