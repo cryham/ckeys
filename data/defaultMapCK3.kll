@@ -44,7 +44,6 @@ S0x1C: U"RCtrl";  #*  (End)  (Right)
 
 # --------  arrows  --------
 #=S0x1E: U"Left";  S0x0C: U"Up";  S0x1B: U"Down";  S0x1C: U"Right";
-
 S0x0E: U"Function3";  #* L3 [Player,mouse,etc]  (left|\)
 S0x1E: U"Function3";  #* L3  (Left)
 S0x0C: U"Function4";  #* L4  (Up)
@@ -54,12 +53,6 @@ S0x1B: U"Function2";  #* L2 [Sequences]  (Down)
 S0x2D: U"Function4";  #* U"NumLock";  (Num)
 S0x2E: U"P/";  S0x2F: U"P*";  S0x1D: U"P-";  S0x54: U"P+";
 S0x51: U"Home";  S0x52: U"Up";  S0x53: U"PageUp";
-S0x63: U"Left";  S0x64: U"P5";  S0x65: U"Right";
+S0x63: U"Left";  S0x64: U"Delete";  S0x65: U"Right";
 S0x3F: U"End";  S0x40: U"Down";  S0x41: U"PageDown";
-S0x0A: U"Insert";  S0x0B: U"Delete";  S0x42: U"PEnter";
-
-
-# . . . .   mini  . . . .
-#S0x70: U"Up";  S0x81: U"Left";  S0x71: U"Right";  S0x72: U"Down";
-#S0x6D: U"PageUp";  S0x6C: U"PageDown";
-#S0x6E: U"Function1";  S0x85: U"Function2";
+S0x0A: U"Insert";  S0x0B: U"P5";  S0x42: U"PEnter";
