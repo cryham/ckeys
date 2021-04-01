@@ -43,4 +43,9 @@ else()
 endif()
 
 target_link_libraries(${PROJECT} ${SFML_LIBRARIES})
-target_link_libraries(${PROJECT} "-lopengl32 -lglu32 -lgdi32")
+
+if(WIN32)
+	target_link_libraries(${PROJECT} "-lopengl32 -lglu32 -lgdi32")
+else()
+	target_link_libraries(${PROJECT} "-lGL")
+endif()

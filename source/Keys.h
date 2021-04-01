@@ -107,10 +107,12 @@ public:
 
 
 	//  keyboard hook
-	#ifdef _WIN32
 	#define	vk_EXTRA 1000
+	#ifdef _WIN32
 	void Hook();
 	void UnHook();
+	#else
+	// todo: implement key detection on Linux
 	#endif
 
 	//  keys pressed list

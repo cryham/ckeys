@@ -17,7 +17,9 @@ bool App::Init()
 
 	keys.LoadIndex();
 
+	#ifdef _WIN32
 	keys.Hook();
+	#endif
 
 	return true;
 }
@@ -25,7 +27,9 @@ bool App::Init()
 //  dtor
 App::~App()
 {
+	#ifdef _WIN32
 	keys.UnHook();
+	#endif
 }
 
 
