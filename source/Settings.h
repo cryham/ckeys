@@ -18,11 +18,11 @@ struct rgb
 class Settings
 {
 public:
-	const static int ver = 110;  // version
+	const static int ver = 111;  // version
 
 	const static int Lmax = 9;  // 0..8
 	const static rgb
-		clrKC[KC_Layer][3],  // rft [rect,frame,text]
+		clrKC[KC_Layer][3],  // [3] = rft  [0 rect, 1 frame, 2 text]
 		clrLay[Lmax][3], clrOver;
 
 	const rgb* getC(const KClr& kc, const int& lay, const int& rft);
