@@ -1,0 +1,53 @@
+Name = CK3-L3-player;
+Version = 3.18;
+Author = "CryHam";
+KLL = 0.3c;
+Date = 2016-05-07;
+
+
+#  player  ---
+U"Q":U"F14";  # <<
+U"W":U"F15";  # >>
+U"A":CONS"SCANPREVIOUSTRACK";  # |<
+U"S":CONS"SCANNEXTTRACK";      # >|
+U"Z":U"F13";  # |>
+U"X":CONS"PAUSEPLAY";  # ||
+U"C":CONS"STOP";  # []
+U"E":U"F16";  #* vol ^
+U"D":U"F17";  #* vol v
+
+
+U"1":U"F18";  U"2":U"F19";  U"3":U"F20";  U"4":U"F21";  #* exe
+U"R":U"F22";  U"F":U"F23";  U"V":U"F24";
+
+U"F1":CONS"MUTE";
+U"F2":CONS"VOLUMEDOWN";  U"F3":CONS"VOLUMEUP";
+
+U"BackTick": U"P=";
+U"Tab": U"P,";
+U"Space": CONS"CALCULATOR";  #calc
+
+
+#  mouse  --
+U"Up":   mouseOut(0, 0,-8);  # y
+U"Down": mouseOut(0, 0, 8);
+U"Left": mouseOut(0,-8, 0);  # x
+U"Right":mouseOut(0, 8, 0);
+
+U"Home":  mouseOut(1, 0, 0);  # btns
+U"PageUp":mouseOut(2, 0, 0);
+U"P5":    mouseOut(3, 0, 0);
+
+
+#  sys
+#U"5":U"P=";	 #ext B2
+#U"6":U"P,";	 #rbut oem~
+
+#U"C":SYS"POWERDOWN"; #not
+#U"V":SYS"SLEEP";
+
+#U"1":CONS"FORWARD";  #browser
+#U"2":CONS"BACK";
+
+#U"X":CONS"SEARCH";  #find-
+#U"C":CONS"BOOKMARKS";  #ext B1
