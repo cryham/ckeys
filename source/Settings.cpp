@@ -5,38 +5,6 @@
 using namespace std;  using namespace tinyxml2;
 
 
-//  const 
-const rgb  // [3] = [rect, frame, text]
-	Settings::clrKC[KC_Layer][3] = {
-		{{26, 51, 73},{ 51,102,153},{176,213,250}},  // Normal
-		{{77,115,153},{204,235,255},{225,240,255}},  // Pressed
-		{{15, 35, 41},{133,133, 63},{239,239,100}},  // Missing
-		{{77, 51, 11},{142,112, 63},{242,166,113}},  // Display
-	},
-	Settings::clrLay[Settings::Lmax][3] = {
-		{{26,51,73},{ 51,102,153},{176,213,250}},
-		{{ 2,40,90},{ 13,112,202},{ 42,173,247}},
-		{{22,65,22},{ 81,153, 73},{132,255,100}},
-		{{55,55,11},{133,133, 63},{240,240,100}},
-		{{77,51,11},{142,112, 63},{244,167,114}},
-		{{77,21,21},{142, 52, 53},{244,117,114}},
-		{{77,51,77},{142, 52,143},{244,117,244}},
-		{{41,41,77},{112,112,143},{164,167,244}},
-		{{77,51,90},{143,112,163},{164,137,254}},
-	},
-	Settings::clrOver = {120,160,200};
-
-const rgb* Settings::getC(const KClr& kc, const int& lay, const int& rft)
-{
-	return &clrLay[lay][rft];
-	/*if (kc > KC_Normal && kc < KC_Layer)
-		return &clrKC[kc][rft];
-	else
-		return &clrLay[lay][rft];
-	/**/
-}
-
-
 //  ctor
 Settings::Settings()
 {
